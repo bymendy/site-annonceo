@@ -15,7 +15,6 @@ require_once('include/header.php');
         <div class="col-md-2">
 
             <div class="list-group text-center">
-
                 <a class="btn btn-outline-success my-2" href=""></a>
             </div>
 
@@ -144,7 +143,7 @@ require_once('include/header.php');
         <div class="col-md-8">
 
             <div class="row justify-content-around py-5">
-                <img class='img-fluid' src="img/la_boutique.webp" alt="Bandeau de La Boutique" loading="lazy">
+                <img class='img-fluid' src="img/banniere-annonce.png" alt="Bandeau de La Boutique" loading="lazy">
             </div>
 
         </div>

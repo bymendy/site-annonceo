@@ -1,10 +1,25 @@
 </div>
 
-<footer class="pt-5">
-
-<h3 class="text-center mt-5"><div class="badge badge-dark text-wrap p-3">&copy; ANNONCEO 2023</div></h3>
-
+<footer class="bg-dark text-light py-3">
+<div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <p class="text-muted">© Annonceo 2023 - Tous droits réservés.</p>
+      </div>
+      <div class="col-md-6">
+        <ul class="list-inline float-end">
+          <li class="list-inline-item"><a href="#">Mentions légales</a></li>
+          <li class="list-inline-item"><a href="#">Conditions générales de vente</a></li>
+          <li class="list-inline-item"><a href="#"><i class="fab fa-facebook"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+          <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </footer>
+
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
