@@ -104,7 +104,7 @@ if (isset($_GET['action'])) {
                         </button>
                     </div>';
             } else {
-                // si on récupère autre chose que update (et donc add) on entame une procédure d'insertion en BDD
+
                 $inscrireAnnonce = $pdo->prepare(" INSERT INTO annonce ( categorie, titre, description, pays, ville, code_postal, adresse, photo, prix) VALUES (:categorie, :titre, :description, :pays, :ville, :code_postal, :adresse, :photo, :prix) ");
                 $inscrireAnnonce->bindValue(':categorie', $_POST['categorie'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
@@ -274,7 +274,7 @@ require_once('includeAdmin/header.php');
 <div class="row justify-content-center py-5">
     <a href='?action=add'>
         <button type="button" class="btn btn-sm btn-outline-dark shadow rounded">
-            <i class="bi bi-plus-circle-fill"></i> Ajouter un annonce
+            <i class="bi bi-plus-circle-fill"></i> Ajouter une annonce
         </button>
     </a>
 </div>

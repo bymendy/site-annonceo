@@ -25,7 +25,7 @@ require_once('includeAdmin/header.php');
         <h2 class="text-center my-5"><div class="badge badge-dark text-wrap p-3">Bonjour <?= $_SESSION['membre']['pseudo'] ?> </div></h2>
         
         <div class="row justify-content-around my-5">
-                <img class='img-fluid' src="../img/back_office.webp" alt="Image du Back Office" loading="lazy">  
+                <img class='img-fluid' src="../img/home-office.png" alt="Image du Back Office" loading="lazy">  
         </div>
 
 <?php require_once('includeAdmin/footer.php'); ?>
