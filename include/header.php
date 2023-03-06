@@ -85,9 +85,11 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="<?= URL ?>inscription.php"><button class="btn btn-outline-dark">Inscription</button></a>
-          <a class="dropdown-item"><button class="btn btn-outline-dark" data-toggle="modal" data-target="#connexionModal">
+          <!-- <a class="dropdown-item"><button class="btn btn-outline-dark" data-toggle="modal" data-target="#connexionModal">
             Connexion
-          </button></a>
+          </button></a> -->
+          <a class="dropdown-item" href="<?= URL ?>connexion.php"><button class="btn btn-outline-dark px-4">Connexion</button></a>
+
           <a class="dropdown-item" href="<?= URL ?>profil.php"><button class="btn btn-outline-dark px-4">Profil</button></a>
           <a class="dropdown-item" href="<?= URL ?>contact.php"><button class="btn btn-outline-dark px-4">Contact</button></a>
         </div>
@@ -114,45 +116,6 @@
 
 <div class="container">
 
-          <!-- Modal -->
-          <div class="modal fade" id="connexionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel"><img src="<?= URL ?>logo-annonceo.png"> Annonceo</h3>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body text-center">
-                
-                <form name="connexion" method="POST" action="">
-                    <div class="row justify-content-around">
-                      <div class="col-md-4 mt-4">
-                      <label class="form-label" for="pseudo"><div class="badge badge-dark text-wrap">Pseudo</div></label>
-                      <input class="form-control btn btn-outline-dark" type="text" name="pseudo" id="pseudo" placeholder="Votre pseudo">
-                      </div>
-                    </div>
-
-                    <div class="row justify-content-around">
-                      <div class="col-md-6 mt-4">
-                      <label class="form-label" for="mdp"><div class="badge badge-dark text-wrap">Mot de passe</div></label>
-                      <input class="form-control btn btn-outline-dark" type="password" name="mdp" id="mdp" placeholder="Votre mot de passe">
-                      </div>
-                    </div>
-                    
-                    <div class="row justify-content-center">
-                      <button type="submit" name="connexion" class="btn btn-lg btn btn-outline-dark mt-3">Connexion</button>
-                    </div>
-
-                </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                </div>
-              </div>
-            </div>
-          </div>
           <!-- ------------- -->
 
 <h1 class="text-center mt-5"><div class="badge badge-dark text-wrap p-3">Annonceo </div></h1>

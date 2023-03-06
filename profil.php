@@ -1,7 +1,7 @@
 <?php
 require_once('include/init.php');
 
-$pageTitle = "Profil de " . $_SESSION['membre']['pseudo'];
+// $pageTitle = "Profil de " . $_SESSION['membre']['pseudo'];
 
 // si le user n'est PAS connecté, alors on lui interdit l'accès à la page profil (redirection vers la page connexion ou autre selon reflexion)
 
@@ -53,7 +53,6 @@ require_once('include/header.php');
             <li class="btn btn-outline-success text-dark my-3 shadow bg-white rounded"><?=  $_SESSION['membre']['prenom'] ?></li>
             <li class="btn btn-outline-success text-dark my-3 shadow bg-white rounded"><?=  $_SESSION['membre']['nom'] ?></li>
             <li class="btn btn-outline-success text-dark my-3 shadow bg-white rounded"><?=  $_SESSION['membre']['email'] ?></li>
-            <li class="btn btn-outline-success text-dark my-3 shadow bg-white rounded"><?=  $_SESSION['membre']['adresse'] ?></li>
         </ul>
     </div>
 </div>

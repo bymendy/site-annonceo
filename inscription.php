@@ -60,13 +60,12 @@ if($_POST){
 
     //  si aucun message d'erreur n'a été généré, c'est que l'utilisateur ne s'est pas trompé en remplissant le formulaire, on peut enclencher la procédure d'envoi en BDD
     if(empty($erreur)){
-        $inscrireUser = $pdo->prepare(" INSERT INTO membre (pseudo, mdp, nom, prenom, telephone, email, civilite) VALUES (:pseudo, :mdp, :nom, :prenom, :telephone, :email, :civilite ) ");
+        $inscrireUser = $pdo->prepare(" INSERT INTO membre (pseudo, mdp, nom, prenom, telephone, email, civilite, date_enregistrement, statut) VALUES (:pseudo, :mdp, :nom, :prenom, :telephone, :email, :civilite, NOW(), 2) ");
         $inscrireUser->bindValue(':pseudo', $_POST['pseudo'], PDO::PARAM_STR);
         $inscrireUser->bindValue(':mdp', $_POST['mdp'], PDO::PARAM_STR);
         $inscrireUser->bindValue(':nom', $_POST['nom'], PDO::PARAM_STR);
         $inscrireUser->bindValue(':prenom', $_POST['prenom'], PDO::PARAM_STR);
         $inscrireUser->bindValue(':telephone', $_POST['telephone'], PDO::PARAM_INT);
-
         $inscrireUser->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
         $inscrireUser->bindValue(':civilite', $_POST['civilite'], PDO::PARAM_STR);
         $inscrireUser->execute();
@@ -91,9 +90,17 @@ require_once('include/header.php');
 <div class="container mt-5">
 	<div class="row justify-content-center">
 	    <div class="col-lg-6"><h2 class="mb-4">Formulaire d'inscription</h2>
-	<form  method="POST" action="">                    
+	<form  method="POST" action=""> 
+    <p><div class="badge badge-dark text-wrap">Civilité</div></p> 
         <div class="col-md-4 mt-5 pt-2"></div>                    
-
+        <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="civilite" id="civilite1" value="femme">
+                <label class="form-check-label mx-2" for="civilite1">Femme</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="civilite" id="civilite2" value="homme" checked>
+                <label class="form-check-label mx-2" for="civilite2">Homme</label>
+            </div>
 					<div class="form-group">
 						<label class="form-label" for="pseudo">Pseudo</label>
 						<input class="form-control" type="text" name="pseudo" id="pseudo" placeholder="Votre pseudo" max-length="20" pattern="[a-zA-Z0-9-_.]{3,20}" title="caractères acceptés: majuscules et minuscules, chiffres, signes tels que: - _ . , entre trois et vingt caractères." required>
