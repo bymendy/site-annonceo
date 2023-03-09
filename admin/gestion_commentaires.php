@@ -40,8 +40,11 @@ if (isset($_GET['action'])) {
         if (empty($erreur)) {
             // si dans l'URL action == update, on entame une procédure de modification
             if ($_GET['action'] == 'update') {
-                $modifCommentaire = $pdo->prepare(" UPDATE commentaire SET id_commentaire = :id_commentaire, commentaire = :commentaire WHERE id_commentaire = :id_commentaire ");
+                $modifCommentaire = $pdo->prepare(" UPDATE commentaire SET id_commentaire = :id_commentaire, commentaire = :commentaire  WHERE id_commentaire = :id_commentaire ");
                 $modifCommentaire->bindValue(':id_commentaire', $_POST['id_commentaire'], PDO::PARAM_INT);
+                // $modifCommentaire->bindValue(':id_membre', $_POST['id_membre'], PDO::PARAM_INT);
+                // $modifCommentaire->bindValue(':id_annonce', $_POST['id_annonce'], PDO::PARAM_INT);
+
                 $modifCommentaire->bindValue(':commentaire', $_POST['commentaire'], PDO::PARAM_STR);
                 $modifCommentaire->execute();
                 // Requete pour afficher un message personnaliser lorsque la modification à bien été réussie
@@ -163,7 +166,7 @@ require_once('includeAdmin/header.php');
                         <td><?= $value ?></td>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                <!-- Crayon pour modifier (UPDATE) et pobelle pour supprimer (DELETE) -->
+                <!-- Crayon pour modifier (UPDATE) et poubelle pour supprimer (DELETE) -->
                 <td><a href='?action=update&id_commentaire=<?= $commentaire['id_commentaire'] ?>'><i class="bi bi-pen-fill text-warning"></i></a></td>
                 <td><a data-href="?action=delete&id_commentaire=<?= $commentaire['id_commentaire'] ?>" data-toggle="modal" data-target="#confirm-delete"><i class="bi bi-trash-fill text-danger" style="font-size: 1.5rem;"></i></a></td>
             </tr>
@@ -204,7 +207,7 @@ require_once('includeAdmin/header.php');
 <!-- <td><a data-href="" data-toggle="modal" data-target="#confirm-delete"><i class="bi bi-trash-fill text-danger" style="font-size: 1.5rem;"></i></a></td> -->
 
 
-<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -219,7 +222,7 @@ require_once('includeAdmin/header.php');
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- modal -->
 

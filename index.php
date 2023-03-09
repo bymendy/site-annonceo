@@ -9,46 +9,56 @@ require_once('include/header.php');
 
 </div>
 <div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-md-7">
+            <ul class="nav nav-pills ">
+            <li class="nav-item">
+                <?php while($menuCategorie = $afficheMenuCategories->fetch(PDO::FETCH_ASSOC)): ?>
+                    <a class="btn btn-dark my-2" href="<?= URL ?>?categorie=<?= $menuCategorie['id_categorie'] ?>"><?= $menuCategorie['titre'] ?></a>
+                <?php endwhile; ?>
+            </li>
+        </ul>
+			</div>
+		</div>
+	</div>
 
     <div class="row my-5">
 
-        <div class="col-md-2">
+    <div class="col-md-2">
 
-            <div class="list-group text-center">
-                <a class="btn btn-outline-success my-2" href=""></a>
-            </div>
 
-        </div>
+        
+    </div>
 
         <!-- --------------------------- -->
-        <!-- pour afficher les vetements par catégories -->
+        <!-- Afficher les annonces par catégories -->
         <?php if(isset($_GET['categorie'])): ?>
         <div class="col-md-8">
 
             <div class="text-center my-5">
-                <img class='img-fluid' src="img/la_boutique_bis.webp" alt="Bandeau de La Boutique" loading="lazy">
+                <img class='img-fluid' src="img/banniere_annonceo.png" alt="Bandeau de La Boutique" loading="lazy">
             </div>
 
             <div class="row justify-content-around">
                 <h2 class="py-5">
-                    <div class="badge badge-dark text-wrap">Nos modèles de <?= $titreCategorie['categorie'] ?> </div>
+                    <div class="badge badge-dark text-wrap"><?= $titreCategorie['titre'] ?> </div>
                 </h2>
             </div>
 
             <div class="row justify-content-around text-center">
 
 
-                <?php while($produit = $afficheProduits->fetch(PDO::FETCH_ASSOC)): ?>
+                <?php while($annonce = $afficheAnnonces->fetch(PDO::FETCH_ASSOC)): ?>
                 <div class="card mx-3 shadow p-3 mb-5 bg-white rounded" style="width: 18rem;">
-                    <a href="fiche_produit.php?id_produit=<?= $produit['id_produit']?>"><img src="<?= URL . 'img/' . $produit['photo'] ?>" class="card-img-top" alt="Photo de <?= $produit['titre'] ?>"></a>
+                    <a href="fiche_annonce.php?id_annonce=<?= $annonce['id_annonce']?>"><img src="<?= URL . 'img/' . $annonce['photo'] ?>" class="card-img-top" alt="Photo de <?= $annonce['titre'] ?>"></a>
                     <div class="card-body">
-                        <h3 class="card-title"><?= $produit['titre'] ?></h3>
+                        <h3 class="card-title"><?= $annonce['titre'] ?></h3>
                         <h3 class="card-title">
-                            <div class="badge badge-dark text-wrap"><?= $produit['prix'] ?> €</div>
+                            <div class="badge badge-dark text-wrap"><?= $annonce['prix'] ?> €</div>
                         </h3>
-                        <p class="card-text"><?= $produit['description'] ?></p>
-                        <!-- Requete pour véhiculer l'id de chaque produit et pouvoir l'afficher et basculer sur la page fiche produit  -->
-                        <a href="fiche_produit.php?id_produit=<?= $produit['id_produit']?>" class="btn btn-outline-success"><i class='bi bi-search'></i> Voir Produit</a>
+                        <p class="card-text"><?= $annonce['description_courte'] ?></p>
+                        <!-- Requete pour véhiculer l'id de chaque annonce et pouvoir l'afficher et basculer sur la page fiche annonce  -->
+                        <a href="fiche_annonce.php?id_annonce=<?= $annonce['id_annonce']?>" class="btn btn-outline-dark"><i class='bi bi-search'></i> Voir Annonce</a>
                     </div>
                 </div>
                 <?php endwhile; ?>
@@ -80,8 +90,8 @@ require_once('include/header.php');
         </div>
 
         <!-- ----------------------- -->
-        <!-- pour afficher les vetements  par public -->
-        <?php elseif(isset($_GET['public'])): ?>
+        <!-- pour afficher les vetements  par titre -->
+        <?php elseif(isset($_GET['titre'])): ?>
 
         <div class="col-md-8">
 
@@ -92,22 +102,22 @@ require_once('include/header.php');
             <div class="row justify-content-around">
 
                 <h2 class="py-5">
-                    <div class="badge badge-dark text-wrap">Nos vêtements <?= ucfirst($titrePublic['public']) ?>s </div>
+                    <div class="badge badge-dark text-wrap">Annonce <?= ucfirst($titreAnnonce['titre']) ?>s </div>
                 </h2>
             </div>
 
             <div class="row justify-content-around text-center">
-            <!-- boucle while qui récupérer tous les vetements s'adressant à un même public ( arelier la requete codées dans affichage.php) -->
-            <?php while($produit = $afficheProduits->fetch(PDO::FETCH_ASSOC)): ?>
+            <!-- boucle while qui récupérer toutes lesannonces  s'adressant à un même titre -->
+            <?php while($annonce = $afficheAnnonces->fetch(PDO::FETCH_ASSOC)): ?>
                 <div class="card mx-3 shadow p-3 mb-5 bg-white rounded" style="width: 18rem;">
-                    <a href="fiche_produit.php?id_produit=<?= $produit['id_produit']?>"><img src="<?= URL . 'img/' . $produit['photo'] ?>" class="card-img-top" alt="Photo de <?= $produit['titre'] ?>"></a>
+                    <a href="fiche_annonce.php?id_annonce=<?= $annonce['id_categorie']?>"><img src="<?= URL . 'img/' . $annonce['id_categorie'] ?>" class="card-img-top" alt="Photo de <?= $annonce['titre'] ?>"></a>
                     <div class="card-body">
-                        <h3 class="card-title"><?= $produit['titre'] ?></h3>
+                        <h3 class="card-title"><?= $annonce['titre'] ?></h3>
                         <h3 class="card-title">
-                            <div class="badge badge-dark text-wrap"><?= $produit['prix'] ?> €</div>
+                            <div class="badge badge-dark text-wrap"><?= $annonce['prix'] ?> €</div>
                         </h3>
-                        <p class="card-text"><?= $produit['description'] ?></p>
-                        <a href="fiche_produit.php?id_produit=<?= $produit['id_produit']?>" class="btn btn-outline-success"><i class='bi bi-search'></i> Voir Produit</a>
+                        <p class="card-text"><?= $annonce['description'] ?></p>
+                        <a href="fiche_annonce.php?id_annonce=<?= $annonce['id_annonce']?>" class="btn btn-outline-success"><i class='bi bi-search'></i> Voir les annonces</a>
                     </div>
                 </div>
             <?php endwhile; ?>
@@ -143,7 +153,7 @@ require_once('include/header.php');
         <div class="col-md-8">
 
             <div class="row justify-content-around py-5">
-                <img class='img-fluid' src="img/banniere-annonce.png" alt="Bandeau de La Boutique" loading="lazy">
+                <img class='img-fluid' src="img/banniere-annonceo.png" alt="Bandeau de La Boutique" loading="lazy">
             </div>
 
         </div>

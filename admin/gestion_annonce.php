@@ -14,6 +14,12 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
     // dans le cas ou aucune information n'a transité dans l'URL, $pageCourante prendra la valeur de defaut qui est 1
     $pageCourante = 1;
 }
+// Faire une variable listeCategorie et appliquer la requete SQL
+$listeCategorie = $pdo->query("SELECT * FROM categorie");
+
+
+
+
 
 $queryAnnonces = $pdo->query("SELECT COUNT(id_annonce) AS nombreAnnonces FROM annonce" );
 $resultatAnnonces = $queryAnnonces->fetch();
@@ -32,15 +38,19 @@ if (isset($_GET['action'])) {
     if ($_POST) {
 // Les contraintes pour chaque champs
 
-        if (!isset($_POST['categorie']) || iconv_strlen($_POST['categorie']) < 3 || iconv_strlen($_POST['categorie']) > 20) {
-            $erreur .= '<div class="alert alert-danger" role="alert">Erreur format nom !</div>';
+        if (!isset($_POST['categorie'])) {
+            $erreur .= '<div class="alert alert-danger" role="alert">Erreur format categorie !</div>';
         }
         if (!isset($_POST['titre']) || iconv_strlen($_POST['titre']) < 3 || iconv_strlen($_POST['titre']) > 20) {
-            $erreur .= '<div class="alert alert-danger" role="alert">Erreur format nom !</div>';
+            $erreur .= '<div class="alert alert-danger" role="alert">Erreur format titre !</div>';
         }
         if (!isset($_POST['description']) || iconv_strlen($_POST['description']) < 3 || iconv_strlen($_POST['description']) > 50) {
-            $erreur .= '<div class="alert alert-danger" role="alert">Erreur format nom !</div>';
+            $erreur .= '<div class="alert alert-danger" role="alert">Erreur format description !</div>';
         }
+        if (!isset($_POST['description_longue']) || iconv_strlen($_POST['description_longue']) < 3 || iconv_strlen($_POST['description_longue']) > 500) {
+            $erreur .= '<div class="alert alert-danger" role="alert">Erreur format description_longue !</div>';
+        }
+
         if (!isset($_POST['pays']) || strlen($_POST['pays']) < 2 || strlen($_POST['pays']) > 30) {
             $erreur .= '<div class="alert alert-danger" role="alert">Erreur format pays !</div>';
         }        
@@ -61,30 +71,57 @@ if (isset($_GET['action'])) {
 
         // ***  Traitement pour la photo
         // Initialisation de la photo
-        $photo_bdd ="";
-        // condition pour modifier une photo 
-        if($_GET['action']== 'update'){
-            // A mettre en relation avec la nouvelle photo que l'on veut insérer en BDD
-            $photo_bdd= $_POST['photoActuelle'];
-        }
-        if(!empty($_FILES['photo']['name'])){
-            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo']['name'];
-            // utilisation de la variable photo_bdd pour lui affecter la valeur de photo_nom
-            $photo_bdd= "$photo_nom";
+        $photo_bdd1 = "";
+        $photo_bdd2 = "";
+        $photo_bdd3 = "";
+        $photo_bdd4 = "";
+        $photo_bdd5 = "";
+        // verifier si $_FILES ['photo] ou photo1 etc']
+        if (!empty($_FILES['photo1']['name'])) {
+            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo1']['name'];
+            $photo_bdd1 = "$photo_nom";
             $photo_dossier = RACINE_SITE . "img/$photo_nom";
-            copy($_FILES['photo']['tmp_name'], $photo_dossier);
+            copy($_FILES['photo1']['tmp_name'], $photo_dossier);
         }
+        if (!empty($_FILES['photo2']['name'])) {
+            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo2']['name'];
+            $photo_bdd2 = "$photo_nom";
+            $photo_dossier = RACINE_SITE . "img/$photo_nom";
+            copy($_FILES['photo2']['tmp_name'], $photo_dossier);
+        }
+        if (!empty($_FILES['photo3']['name'])) {
+            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo3']['name'];
+            $photo_bdd3 = "$photo_nom";
+            $photo_dossier = RACINE_SITE . "img/$photo_nom";
+            copy($_FILES['photo3']['tmp_name'], $photo_dossier);
+        }
+        if (!empty($_FILES['photo4']['name'])) {
+            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo4']['name'];
+            $photo_bdd4 = "$photo_nom";
+            $photo_dossier = RACINE_SITE . "img/$photo_nom";
+            copy($_FILES['photo4']['tmp_name'], $photo_dossier);
+        }
+        if (!empty($_FILES['photo5']['name'])) {
+            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo5']['name'];
+            $photo_bdd5 = "$photo_nom";
+            $photo_dossier = RACINE_SITE . "img/$photo_nom";
+            copy($_FILES['photo5']['tmp_name'], $photo_dossier);
+        }
+
         // *** Fin traitement photo
         
         // Condition si la personne à bien renseigner les champs et ne s'est pas tromper
         if (empty($erreur)) {
             // si dans l'URL action == update, on entame une procédure de modification
             if ($_GET['action'] == 'update') {
-                $modifAnnonce = $pdo->prepare(" UPDATE annonce SET id_annonce = :id_annonce , categorie = :categorie, titre = :titre, description = :description, pays = :pays, ville = :ville, code_postal = :code_postal, adresse = :adresse, photo = :photo, prix = :prix, stock = :stock WHERE id_annonce = :id_annonce ");
+                $modifAnnonce = $pdo->prepare(" UPDATE annonce SET categorie_id = :categorie, titre = :titre, description_courte = :description, description_longue = :description_longue, pays = :pays, ville = :ville, cp = :code_postal, adresse = :adresse, photo = :photo, prix = :prix, stock = :stock WHERE id_annonce = :id_annonce ");
                 $modifAnnonce->bindValue(':id_annonce', $_POST['id_annonce'], PDO::PARAM_INT);
                 $modifAnnonce->bindValue(':categorie', $_POST['categorie'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
+
                 $modifAnnonce->bindValue(':description', $_POST['description'], PDO::PARAM_STR);
+                $modifAnnonce->bindValue(':description_longue', $_POST['description_longue'], PDO::PARAM_STR);
+
                 $modifAnnonce->bindValue(':pays', $_POST['pays'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':ville', $_POST['ville'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':code_postal', $_POST['code_postal'], PDO::PARAM_STR);
@@ -105,10 +142,15 @@ if (isset($_GET['action'])) {
                     </div>';
             } else {
 
-                $inscrireAnnonce = $pdo->prepare(" INSERT INTO annonce ( categorie, titre, description, pays, ville, code_postal, adresse, photo, prix) VALUES (:categorie, :titre, :description, :pays, :ville, :code_postal, :adresse, :photo, :prix) ");
+                $inscrireAnnonce = $pdo->prepare(" INSERT INTO annonce ( membre_id, categorie_id, titre, description_courte, description_longue, pays, ville, cp, adresse, photo, prix, date_enregistrement) VALUES (:membre_id, :categorie, :titre, :description, :description_longue, :pays, :ville, :code_postal, :adresse, :photo, :prix, NOW()) ");
                 $inscrireAnnonce->bindValue(':categorie', $_POST['categorie'], PDO::PARAM_STR);
+                $inscrireAnnonce->bindValue(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
+
                 $inscrireAnnonce->bindValue(':description', $_POST['description'], PDO::PARAM_STR);
+                $inscrireAnnonce->bindValue(':description_longue', $_POST['description_longue'], PDO::PARAM_STR);
+
+
                 $inscrireAnnonce->bindValue(':pays', $_POST['pays'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':ville', $_POST['ville'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':code_postal', $_POST['code_postal'], PDO::PARAM_STR);
@@ -129,7 +171,10 @@ if (isset($_GET['action'])) {
     $id_annonce = (isset($annonceActuel['id_annonce'])) ? $annonceActuel['id_annonce'] : "";
     $categorie = (isset($annonceActuel['categorie'])) ? $annonceActuel['categorie'] : "";
     $titre = (isset($annonceActuel['titre'])) ? $annonceActuel['titre'] : "";
+
     $description = (isset($annonceActuel['description'])) ? $annonceActuel['description'] : "";
+    $description_longue = (isset($annonceActuel['description_longue'])) ? $annonceActuel['description_longue'] : "";
+
     $pays = (isset($annonceActuel['pays'])) ? $annonceActuel['pays'] : "";
     $ville = (isset($annonceActuel['ville'])) ? $annonceActuel['ville'] : "";
     $code_postal = (isset($annonceActuel['code_postal'])) ? $annonceActuel['code_postal'] : "";
@@ -177,7 +222,17 @@ require_once('includeAdmin/header.php');
             <label class="form-label" for="categorie">
                 <div class="badge badge-dark text-wrap">Catégorie</div>
             </label>
-            <input class="form-control" type="text" name="categorie" id="categorie" placeholder="Catégorie" value="<?= $categorie ?>">
+            <!-- Mettre une balise select et faire une boucle While -->
+            <select class="form-control"  name="categorie" id="categorie">
+
+            <?php 
+            
+            while($categorie = $listeCategorie->fetch(PDO::FETCH_ASSOC)){
+                echo "<option value='$categorie[id_categorie]'> $categorie[titre] </option> ";
+            }
+        
+            ?>
+            </select>
         </div>
 
         <div class="col-md-4">
@@ -189,11 +244,19 @@ require_once('includeAdmin/header.php');
     </div>
 
     <div class="row justify-content-around mt-5">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <label class="form-label" for="description">
                 <div class="badge badge-dark text-wrap">Description</div>
             </label>
-            <textarea class="form-control" name="description" id="description" placeholder="Description" rows="5" ><?= $description ?>"</textarea>
+            <textarea class="form-control" name="description" id="description" placeholder="Description" rows="5" ><?= $description ?></textarea>
+        </div>
+    </div>
+    <div class="row justify-content-around mt-5">
+        <div class="col-md-12">
+            <label class="form-label" for="description_longue">
+                <div class="badge badge-dark text-wrap">Description longue </div>
+            </label>
+            <textarea class="form-control" name="description_longue" id="description_longue" placeholder="Description longue" rows="5" ><?= $description_longue ?></textarea>
         </div>
     </div>
 

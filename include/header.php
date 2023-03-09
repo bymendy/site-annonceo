@@ -5,15 +5,6 @@
 
 ?>
 
-<!-- $erreur .= '<div class="alert alert-danger" role="alert">Erreur pseudo inconnu !</div>'; -->
-
-<!-- $validate .= '<div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
-                  Félicitations <strong>' . $_SESSION['membre']['pseudo'] .'</strong>, vous etes connecté(e) 😉 !
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>'; -->
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -35,7 +26,7 @@
   <!-- code pour récupérer le nom de chaque page de manière dynamique on declare pour chaque fichier, une valeur à pageTitle
   Dans le cas de la page d'accueil/index, impossible d'avoir une valeur si on a cliqué sur rien, donc on ne peut pas déclarer dans index.php une valeur unique. Cela empecherait d'avoir un onglet dynamiqu si on veut afficher les manteaux, ou les vestes etc...
   Pour résoudre ce problème, on dit que si pageTitle existe (dans un fichier), on affiche sa valeur, si elle n'existe pas, on affiche La Boutique -->
-    <title><?= (isset($pageTitle) ? $pageTitle : "La Boutique") ?></title>
+    <title><?= (isset($pageTitle) ? $pageTitle : "Annonceo") ?></title>
 </head>
 <body>
 
@@ -44,21 +35,16 @@
 <!-- ------------------- -->
 
 <nav class="navbar navbar-expand-lg navbar-black gray-100">
-  <a class="navbar-brand" href="<?= URL ?>"><img src="<?= URL ?>logo-annonceo.png"></a>
+  <a class="navbar-brand" href="<?= URL ?>"><img src="<?= URL ?>logo_annonceo.png"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+  <ul class="navbar-nav mr-auto">
       <li class="nav-item mt-2">
-        <a class="nav-link" href="<?= URL ?>">Annonceo</a>
-      </li>
-      <!-- ----------- -->
-    
-      <li class="nav-item">
-        <!-- ucfirst permet de donner une majuscule a la première lettre d'un mot -->
-        <a class="nav-link" href=""><button type="button" class="btn btn-dark"></button></a>
+      <a><button class="btn btn-outline-dark" data-toggle="modal" data-target="#connexionModal">Déposer une annonce</button></a>
       </li>
       <!-- ---------- -->
     </ul>
@@ -72,7 +58,8 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="<?= URL ?>profil.php">Profil <?= $_SESSION['membre']['pseudo'] ?></a>
-          <a class="dropdown-item" href="<?= URL ?>panier.php">Panier <?= $_SESSION['membre']['pseudo'] ?></a>
+          <a class="dropdown-item" href="<?= URL ?>deposer_annonce.php">Annonce <?= $_SESSION['membre']['pseudo'] ?></a>          
+
           <a class="dropdown-item" href="<?= URL ?>connexion.php?action=deconnexion">Déconnexion</a>
         </div>
       </li>
@@ -81,16 +68,12 @@
       <!-- si il n'est pas connecté, il aura droit aux pages inscription, connexion et panier (mais pas aux autres)-->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle mr-5" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <button type="button" class="btn btn-dark">Espace Membre</button>
+        <button type="button" class="btn btn-outline-dark">Espace Membre</button>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="<?= URL ?>inscription.php"><button class="btn btn-outline-dark">Inscription</button></a>
-          <!-- <a class="dropdown-item"><button class="btn btn-outline-dark" data-toggle="modal" data-target="#connexionModal">
-            Connexion
-          </button></a> -->
           <a class="dropdown-item" href="<?= URL ?>connexion.php"><button class="btn btn-outline-dark px-4">Connexion</button></a>
 
-          <a class="dropdown-item" href="<?= URL ?>profil.php"><button class="btn btn-outline-dark px-4">Profil</button></a>
           <a class="dropdown-item" href="<?= URL ?>contact.php"><button class="btn btn-outline-dark px-4">Contact</button></a>
         </div>
       </li>
@@ -115,7 +98,26 @@
 </header>
 
 <div class="container">
-
+          <!-- Modal -->
+          <div class="modal fade" id="connexionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                <h3 class="modal-title " id="exampleModalLabel"><img src="<?= URL ?>logo_annonceo.png ">Bonjour !  <br> Connectez-vous ou créez un compte pour déposer votre annonce </h3>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body text-center">
+                <a class="dropdown-item" href="<?= URL ?>inscription.php"><button class="btn btn-outline-dark">Créer un compte</button></a>
+                <a class="" href="<?= URL ?>connexion.php"><button class="btn btn-outline-dark px-4">Me connecter</button></a>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- ------------- -->
 
 <h1 class="text-center mt-5"><div class="badge badge-dark text-wrap p-3">Annonceo </div></h1>

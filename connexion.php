@@ -10,8 +10,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'deconnexion'){
 }
 if(internauteConnecte()){
     header('location:' . URL . 'profil.php');
-    // ce exit est une sécurité supplémentaire par rapport à la redirection
-    // le exit empeche l'exécution du code qui suit (code inaccessible au hacker, même à partir d'une autre page (code injecté vie URL))
     exit();
 }
 
@@ -84,10 +82,7 @@ if($_POST){
 require_once('include/header.php');
 ?>
 
-<h2 class="text-center py-5"><div class="badge badge-dark text-wrap p-3">Connexion</div></h2>
-
 <?= $validate ?>
-
 
 <form class="my-5" method="POST" action="">
 
@@ -99,11 +94,11 @@ require_once('include/header.php');
             <h3 class="text-center mb-4">Se connecter</h3>
               <div class="form-group">
               <label class="form-label" for="pseudo"><div class="badge badge-dark text-wrap">Pseudo</div></label>
-                <input class="form-control btn btn-outline-success mb-4" type="text" name="pseudo" id="pseudo" placeholder="Votre pseudo">
+                <input class="form-control btn btn-outline-dark mb-4" type="text" name="pseudo" id="pseudo" placeholder="Votre pseudo">
               </div>
               <div class="form-group">
               <label class="form-label" for="mdp"><div class="badge badge-dark text-wrap">Mot de passe</div></label>
-                <input class="form-control btn btn-outline-success mb-4" type="password" name="mdp" id="mdp" placeholder="Votre mot de passe">
+                <input class="form-control btn btn-outline-dark mb-4" type="password" name="mdp" id="mdp" placeholder="Votre mot de passe">
               </div>
               <button type="submit" class="btn btn-primary btn-block">Connexion</button>
           </div>
