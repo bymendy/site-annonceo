@@ -10,6 +10,16 @@ if(internauteConnecte()){
 
 // tout le controle des inputs et la procédure d'envoi de données en BDD devra etre codé dans cette condition
 if($_POST){
+    if(isset($_POST['valider'])) {
+        $inscriptionReussie = true; // une variable pour indiquer si l'annonce a été déposée avec succès ou non
+
+    }
+    echo (isset($inscriptionReussie)) ? '<div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
+    <p>Merci de votre inscription ! Connectez vous sur votre espace membre et déposez votre annonce 😉 !</p> 
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>' : '';
 
     // controle du pseudo avec un preg_match
     if(!isset($_POST['pseudo']) || !preg_match('#^[a-zA-Z0-9-_.]{3,20}$#', $_POST['pseudo'])){
@@ -130,7 +140,7 @@ require_once('include/header.php');
 						<label class="form-label" for="email">Adresse e-mail</label>
 						<input class="form-control" type="email" name="email" id="email" placeholder="Votre email" required>
 					</div>
-					<button type="submit" class="btn btn-dark my-5">S'inscrire</button>
+					<button type="submit" name="valider"class="btn btn-dark my-5">S'inscrire</button>
 
 			</div>
 		</div>

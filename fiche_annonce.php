@@ -62,7 +62,7 @@ require_once('include/header.php');
                             
                         <!-- ------------ -->
                         <!-- Lien pour voir tous les annonces de la meme catégorie -->
-                        <<p>Voir tous les modèles <a href="<?= URL ?>?categorie=<?= $detail['categorie'] ?>">de la même catégorie</a> ou <a href="<?= URL ?>?categorie=<?= $detail['categorie'] ?>">pour le même titre</a></p>
+                        <<p>Voir tous les modèles <a href="<?= URL ?>?annonce=<?= $detail['annonce'] ?>">de la même catégorie</a> ou <a href="<?= URL ?>?categorie=<?= $detail['categorie'] ?>">pour le même titre</a></p>
                 </div>
             </div>
         </div>

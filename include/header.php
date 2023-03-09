@@ -44,7 +44,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
   <ul class="navbar-nav mr-auto">
       <li class="nav-item mt-2">
-      <a><button class="btn btn-outline-dark" data-toggle="modal" data-target="#connexionModal">Déposer une annonce</button></a>
+      <a><button class="btn btn-outline-dark" data-toggle="modal" id="model" data-target="#connexionModal">Déposer une annonce<?= (isset($_SESSION['membre'])) ? '<style>#model{ display: none; }</style>' : ''; ?></button> </a>
       </li>
       <!-- ---------- -->
     </ul>
@@ -58,7 +58,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="<?= URL ?>profil.php">Profil <?= $_SESSION['membre']['pseudo'] ?></a>
-          <a class="dropdown-item" href="<?= URL ?>deposer_annonce.php">Annonce <?= $_SESSION['membre']['pseudo'] ?></a>          
+     
 
           <a class="dropdown-item" href="<?= URL ?>connexion.php?action=deconnexion">Déconnexion</a>
         </div>
@@ -86,6 +86,7 @@
           <a class="nav-link" href="admin/index.php"><button type="button" class="btn btn-dark">Admin</button></a>
       </li>
     <?php endif; ?>
+
       <!-- ------------------------------------ -->
     </ul>
     <form class="form-inline my-2 my-lg-0">

@@ -34,11 +34,11 @@ if(isset($_GET['public'])){
 
     // affichage des annonces par public
     // requete qui va cibler tous les annonces qui ont en commun le public récupéré dans l'URL
-    $afficheAnnonces = $pdo->query(" SELECT * FROM annonce WHERE public = '$_GET[public]' ORDER BY prix ASC ");
+    $afficheAnnonces = $pdo->query(" SELECT * FROM annonce WHERE titre = '$_GET[titre]' ORDER BY prix ASC ");
     // fin affichage des annonces par public
 
     // affichage du public dans le <h2>
-    $afficheTitrePublic = $pdo->query(" SELECT public FROM annonce WHERE public = '$_GET[public]' ");
+    $afficheTitrePublic = $pdo->query(" SELECT titre FROM annonce WHERE titre = '$_GET[titre]' ");
     $titrePublic = $afficheTitrePublic->fetch(PDO::FETCH_ASSOC);
     // fin du </h2> pour le public
 
@@ -51,7 +51,7 @@ if(isset($_GET['public'])){
 // ---------------------------------------------------------------------------------------
 // Tout ce qui concerne la fiche annonce
 
-// affichage d'un annonce
+// affichage d'une annonce
 if(isset($_GET['id_annonce'])){
     $detailAnnonce = $pdo->query(" SELECT * FROM annonce WHERE id_annonce = '$_GET[id_annonce]' ");
     // pour se protéger de qlq'un qui tenterait de modifier l'id-annonce dans l'URL...si la valeur n'existe pas en BDD, on le redirige vers notre index (URL). Le <= 0 est fait dans le cas ou il injecte une valeur négative

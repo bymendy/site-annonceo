@@ -19,6 +19,18 @@ $adresse = (isset($_POST['adresse'])) ? $_POST['adresse'] : "";
 $cp = (isset($_POST['cp'])) ? $_POST['cp'] : "";
 
 if ($_POST) {
+    if(isset($_POST['valider'])) {
+        $annonce_deposee = true; // une variable pour indiquer si l'annonce a été déposée avec succès ou non
+
+    }
+    echo (isset($annonce_deposee)) ? '<div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
+    <p>Votre annonce a été déposée avec succès 😉 !</p> 
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>' : '';
+
+
 
     if (!isset($_POST['categorie'])) {
         $erreur .= '<div class="alert alert-danger" role="alert">Erreur format categorie !</div>';
@@ -105,20 +117,20 @@ if ($_POST) {
 
             $photo_id = $pdo->lastInsertId();
 
-            $inscrireProduit = $pdo->prepare(" INSERT INTO annonce (titre, description_courte, description_longue, prix, photo, pays, ville, adresse, cp, membre_id, categorie_id, date_enregistrement, photo_id) VALUES (:titre, :description_courte, :description_longue, :prix, :photo, :pays, :ville, :adresse, :cp, :membre_id, :categorie, NOW(), :photo_id )");
-            $inscrireProduit->bindValue(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':description_courte', $_POST['description_courte'], PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':description_longue', $_POST['description_longue'], PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':prix', $_POST['prix'], PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':photo', $photo_bdd, PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':pays', $_POST['pays'], PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':ville', $_POST['ville'], PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':adresse', $_POST['adresse'], PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':cp', $_POST['cp'], PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':categorie', $_POST['categorie'], PDO::PARAM_STR);
-            $inscrireProduit->bindValue(':photo_id', $photo_id, PDO::PARAM_STR);
-            $inscrireProduit->execute();
+            $inscrireAnnonce = $pdo->prepare(" INSERT INTO annonce (titre, description_courte, description_longue, prix, photo, pays, ville, adresse, cp, membre_id, categorie_id, date_enregistrement, photo_id) VALUES (:titre, :description_courte, :description_longue, :prix, :photo, :pays, :ville, :adresse, :cp, :membre_id, :categorie, NOW(), :photo_id )");
+            $inscrireAnnonce->bindValue(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':description_courte', $_POST['description_courte'], PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':description_longue', $_POST['description_longue'], PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':prix', $_POST['prix'], PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':photo', $photo_bdd, PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':pays', $_POST['pays'], PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':ville', $_POST['ville'], PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':adresse', $_POST['adresse'], PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':cp', $_POST['cp'], PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':categorie', $_POST['categorie'], PDO::PARAM_STR);
+            $inscrireAnnonce->bindValue(':photo_id', $photo_id, PDO::PARAM_STR);
+            $inscrireAnnonce->execute();
             $content .= '<div class="alert alert-success alert-dismissible fade show
             mt-5" role="alert">
             <strong>Félicitations !</strong> Ajout de l\'annonce réussie !
@@ -133,11 +145,14 @@ if ($_POST) {
 // require_once('include/affichage.php');
 require_once('include/header.php');
 ?>
-
 </div>
+<div class=" my-5">
+                <img class='img-fluid' src="img/banniere_depose.png" alt="Bandeau de La Boutique" loading="lazy">
+            </div>
+
 <div class="container">
 <!-- FORMULAIRE ANNONCE -->
-<h2 class="pt-5">Déposer votre annonce</h2>
+<h2 class="pt-5">Créez votre annonce en quelques clics</h2>
 <?php if(internauteConnecte()) : ?>
     <form id="monForm" class="my-5" method="POST" action="" enctype="multipart/form-data">
         <?= $erreur ?>
@@ -266,17 +281,12 @@ require_once('include/header.php');
         </div>
 
         <div class="col-md-1 mt-5">
-            <button type="submit" class="btn btn-outline-dark btn-warning">Valider</button>
+            <button type="submit" name="valider" class="btn btn-dark btn-outline-success">Valider</button>
         </div>
 
     </form>
     <!-- Fin du Formulaire -->
-<?php else : ?>
-    <div class="row">
-        <div class="col-12">
-            <p>Veuillez vous connecter afin de pouvoir déposer une annonce.</p>
-        </div>
-    </div>
+
 <?php endif; ?>
 </div>
 
