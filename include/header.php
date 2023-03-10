@@ -43,9 +43,12 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
   <ul class="navbar-nav mr-auto">
-      <li class="nav-item mt-2">
+      <li class="nav-item mt-4 col-md-12 ">
       <a><button class="btn btn-outline-dark" data-toggle="modal" id="model" data-target="#connexionModal">Déposer une annonce<?= (isset($_SESSION['membre'])) ? '<style>#model{ display: none; }</style>' : ''; ?></button> </a>
       </li>
+      <li class=" mt-4 col-md-8 ">
+        <div class="row  "><a href="<?= URL ?>deposer_annonce.php"><button class="shadow btn btn-dark btn-outline-success  " id="depose">Déposez votre annonce <?= (!isset($_SESSION['membre'])) ? '<style>#depose{ display: none; }</style>' : ''; ?></button></a></div>
+        </li>
       <!-- ---------- -->
     </ul>
     <ul class="navbar-nav ml-auto">

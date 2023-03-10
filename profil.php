@@ -50,7 +50,7 @@ require_once('include/header.php');
 	</div>
     </div>
     <div class="container my-5 ">
-        <div class="row justify-content-center"><a href="<?= URL ?>deposer_annonce.php"><button class="shadow btn btn-dark btn-outline-success  px-4  ">Déposez votre annonce</button></a></div>
+        <div class="row justify-content-center"><a href="<?= URL ?>deposer_annonce.php"><button class="shadow btn btn-dark btn-outline-success btn-16 px-4  ">Déposez votre annonce</button></a></div>
     </div>
     
 
