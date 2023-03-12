@@ -31,6 +31,13 @@ $nombrePages = ceil($nombreAnnonces / $parPage);
 $premierAnnonce = ($pageCourante - 1) * $parPage;
 
 // fin pagination
+$photoActuelle = "";
+
+$photoBdd1 = "";
+$photoBdd2 = "";
+$photoBdd3 = "";
+$photoBdd4 = "";
+$photoBdd5 = "";
 // ************ CONTRAINTE ************
 // 1ére contrainte
 if (isset($_GET['action'])) {
@@ -44,10 +51,10 @@ if (isset($_GET['action'])) {
         if (!isset($_POST['titre']) || iconv_strlen($_POST['titre']) < 3 || iconv_strlen($_POST['titre']) > 20) {
             $erreur .= '<div class="alert alert-danger" role="alert">Erreur format titre !</div>';
         }
-        if (!isset($_POST['description']) || iconv_strlen($_POST['description']) < 3 || iconv_strlen($_POST['description']) > 250) {
+        if (!isset($_POST['description']) || iconv_strlen($_POST['description']) < 3 || iconv_strlen($_POST['description']) > 500) {
             $erreur .= '<div class="alert alert-danger" role="alert">Erreur format description !</div>';
         }
-        if (!isset($_POST['description_longue']) || iconv_strlen($_POST['description_longue']) < 3 || iconv_strlen($_POST['description_longue']) > 500) {
+        if (!isset($_POST['description_longue']) || iconv_strlen($_POST['description_longue']) < 3 || iconv_strlen($_POST['description_longue']) > 1000) {
             $erreur .= '<div class="alert alert-danger" role="alert">Erreur format description_longue !</div>';
         }
 
@@ -70,42 +77,72 @@ if (isset($_GET['action'])) {
         }
 
         // ***  Traitement pour la photo
-        // Initialisation de la photo
-        $photo_bdd1 = "";
-        $photo_bdd2 = "";
-        $photo_bdd3 = "";
-        $photo_bdd4 = "";
-        $photo_bdd5 = "";
-        // verifier si $_FILES ['photo] ou photo1 etc']
-        if (!empty($_FILES['photo1']['name'])) {
-            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo1']['name'];
-            $photo_bdd1 = "$photo_nom";
-            $photo_dossier = RACINE_SITE . "img/$photo_nom";
-            copy($_FILES['photo1']['tmp_name'], $photo_dossier);
+        $photoBdd = (!empty($_POST['photoActuelle'])) ? $_POST['photoActuelle'] : "";
+        // if($_GET['action'] == 'update'){
+        //     $photoBdd = $_POST['photoActuelle'];
+        // }
+
+        if(!empty($_FILES['photo']['name'])){
+            $photo_nom = uniqid() . '_' . $_FILES['photo']['name'];
+            $photoBdd = "$photo_nom";
+            $photoDossier = RACINE_SITE . "img/$photo_nom";
+            if(is_uploaded_file($_FILES['photo']['tmp_name']) && file_exists(RACINE_SITE . "img/")){
+                copy($_FILES['photo']['tmp_name'], $photoDossier);
+            } else {
+                echo "Une erreur est survenue lors du téléchargement du fichier.";
+            }
         }
-        if (!empty($_FILES['photo2']['name'])) {
-            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo2']['name'];
-            $photo_bdd2 = "$photo_nom";
-            $photo_dossier = RACINE_SITE . "img/$photo_nom";
-            copy($_FILES['photo2']['tmp_name'], $photo_dossier);
+        // A VOIR POUR LES 5 AUTRES PHOTOS
+
+        if(!empty($_FILES['photo1']['name'])){
+            $photo_nom = uniqid() . '_' . $_FILES['photo1']['name'];
+            $photoBdd1 = "$photo_nom";
+            $photoDossier = RACINE_SITE . "img/$photo_nom";
+            if(is_uploaded_file($_FILES['photo1']['tmp_name']) && file_exists(RACINE_SITE . "img/")){
+                copy($_FILES['photo1']['tmp_name'], $photoDossier);
+            } else {
+                echo "Une erreur est survenue lors du téléchargement du fichier.";
+            }
         }
-        if (!empty($_FILES['photo3']['name'])) {
-            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo3']['name'];
-            $photo_bdd3 = "$photo_nom";
-            $photo_dossier = RACINE_SITE . "img/$photo_nom";
-            copy($_FILES['photo3']['tmp_name'], $photo_dossier);
+        if(!empty($_FILES['photo2']['name'])){
+            $photo_nom = uniqid() . '_' . $_FILES['photo2']['name'];
+            $photoBdd2 = "$photo_nom";
+            $photoDossier = RACINE_SITE . "img/$photo_nom";
+            if(is_uploaded_file($_FILES['photo2']['tmp_name']) && file_exists(RACINE_SITE . "img/")){
+                copy($_FILES['photo2']['tmp_name'], $photoDossier);
+            } else {
+                echo "Une erreur est survenue lors du téléchargement du fichier.";
+            }
         }
-        if (!empty($_FILES['photo4']['name'])) {
-            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo4']['name'];
-            $photo_bdd4 = "$photo_nom";
-            $photo_dossier = RACINE_SITE . "img/$photo_nom";
-            copy($_FILES['photo4']['tmp_name'], $photo_dossier);
+        if(!empty($_FILES['photo3']['name'])){
+            $photo_nom = uniqid() . '_' . $_FILES['photo3']['name'];
+            $photoBdd3 = "$photo_nom";
+            $photoDossier = RACINE_SITE . "img/$photo_nom";
+            if(is_uploaded_file($_FILES['photo3']['tmp_name']) && file_exists(RACINE_SITE . "img/")){
+                copy($_FILES['photo3']['tmp_name'], $photoDossier);
+            } else {
+                echo "Une erreur est survenue lors du téléchargement du fichier.";
+            }
         }
-        if (!empty($_FILES['photo5']['name'])) {
-            $photo_nom = $_POST['titre'] . '_' . $_FILES['photo5']['name'];
-            $photo_bdd5 = "$photo_nom";
-            $photo_dossier = RACINE_SITE . "img/$photo_nom";
-            copy($_FILES['photo5']['tmp_name'], $photo_dossier);
+        if(!empty($_FILES['photo4']['name'])){
+            $photo_nom = uniqid() . '_' . $_FILES['photo4']['name'];
+            $photoBdd4 = "$photo_nom";
+            $photoDossier = RACINE_SITE . "img/$photo_nom";
+            if(is_uploaded_file($_FILES['photo4']['tmp_name']) && file_exists(RACINE_SITE . "img/")){
+                copy($_FILES['photo4']['tmp_name'], $photoDossier);
+            } else {
+                echo "Une erreur est survenue lors du téléchargement du fichier.";
+            }
+        }
+        if(!empty($_FILES['photo5']['name'])){
+            $photo_nom = uniqid() . '_' . $_FILES['photo5']['name'];
+            $photoBdd5 = "$photo_nom";
+            $photoDossier = RACINE_SITE . "img/$photo_nom";
+            if(is_uploaded_file($_FILES['photo5']['tmp_name']) && file_exists(RACINE_SITE . "img/")){
+                copy($_FILES['photo5']['tmp_name'], $photoDossier);
+            } else {
+                echo "Une erreur est survenue lors du téléchargement du fichier.";
+            }
         }
 
         // *** Fin traitement photo
@@ -113,27 +150,27 @@ if (isset($_GET['action'])) {
         // Condition si la personne à bien renseigner les champs et ne s'est pas tromper
         if (empty($erreur)) {
             // si dans l'URL action == update, on entame une procédure de modification
-            if ($_GET['action'] == 'update') {
-                $modifAnnonce = $pdo->prepare(" UPDATE annonce SET categorie_id = :categorie, titre = :titre, description_courte = :description, description_longue = :description_longue, pays = :pays, ville = :ville, cp = :code_postal, adresse = :adresse, photo = :photo, prix = :prix, stock = :stock WHERE id_annonce = :id_annonce ");
+            if($_GET['action'] == 'update'){
+                $modifAnnonce = $pdo->prepare("UPDATE annonce SET id_annonce = :id_annonce, titre = :titre, description_courte = :description_courte, description_longue = :description_longue, prix = :prix, pays = :pays, ville = :ville, adresse = :adresse, cp = :code_postal, prix = :prix, categorie_id = :categorie_id, photo = :photo  WHERE id_annonce = :id_annonce");
                 $modifAnnonce->bindValue(':id_annonce', $_POST['id_annonce'], PDO::PARAM_INT);
-                $modifAnnonce->bindValue(':categorie', $_POST['categorie'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
-
                 $modifAnnonce->bindValue(':description', $_POST['description'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':description_longue', $_POST['description_longue'], PDO::PARAM_STR);
-
+                $modifAnnonce->bindValue(':prix', $_POST['prix'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':pays', $_POST['pays'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':ville', $_POST['ville'], PDO::PARAM_STR);
-                $modifAnnonce->bindValue(':code_postal', $_POST['code_postal'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':adresse', $_POST['adresse'], PDO::PARAM_STR);
-                $modifAnnonce->bindValue(':photo', $photo_bdd1, PDO::PARAM_STR);
-                $modifAnnonce->bindValue(':prix', $_POST['prix'], PDO::PARAM_INT);
+                $modifAnnonce->bindValue(':code_postal', $_POST['code_postal'], PDO::PARAM_STR);
+                $modifAnnonce->bindValue(':categorie_id', $_POST['categorie'], PDO::PARAM_STR);
+                $modifAnnonce->bindValue(':photo', $photoBdd, PDO::PARAM_STR);
                 $modifAnnonce->execute();
-                // Requete pour afficher un message personnaliser lorsque la modification à bien été réussie
+
+
                 $queryAnnonce = $pdo->query(" SELECT titre FROM annonce WHERE id_annonce = '$_GET[id_annonce]' ");
-                // le query permet de cibler un élément tandis que le fetch permet de récupérer la cible
+
                 $annonce = $queryAnnonce->fetch(PDO::FETCH_ASSOC);
 
+                // Requete pour afficher un message personnaliser lorsque la modification à bien été réussie
                 $content .= '<div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
                         <strong>Félicitations !</strong> Modification du annonce '. $annonce['titre'] .' réussie !
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -142,7 +179,17 @@ if (isset($_GET['action'])) {
                     </div>';
             } else {
 
-                $inscrireAnnonce = $pdo->prepare(" INSERT INTO annonce ( membre_id, categorie_id, titre, description_courte, description_longue, pays, ville, cp, adresse, photo, prix, date_enregistrement) VALUES (:membre_id, :categorie, :titre, :description, :description_longue, :pays, :ville, :code_postal, :adresse, :photo, :prix, NOW()) ");
+
+                $inscrirePhoto = $pdo->prepare("INSERT INTO photo (photo1, photo2, photo3, photo4, photo5) VALUES (:photo1, :photo2, :photo3, :photo4, :photo5)");
+
+                $inscrirePhoto->bindParam(':photo1', $photoBdd1);
+                $inscrirePhoto->bindParam(':photo2', $photoBdd2);
+                $inscrirePhoto->bindParam(':photo3', $photoBdd3);
+                $inscrirePhoto->bindParam(':photo4', $photoBdd4);
+                $inscrirePhoto->bindParam(':photo5', $photoBdd5);
+                $inscrirePhoto->execute();
+
+                $inscrireAnnonce = $pdo->prepare(" INSERT INTO annonce ( membre_id, categorie_id, titre, description_courte, description_longue, pays, ville, cp, adresse, photo, prix, date_enregistrement) VALUES (:membre_id, :categorie, :titre, :description, :description_longue, :pays, :ville, :code_postal, :adresse, :photo, :prix, NOW(), :photo_id) ");
                 $inscrireAnnonce->bindValue(':categorie', $_POST['categorie'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
@@ -155,7 +202,7 @@ if (isset($_GET['action'])) {
                 $inscrireAnnonce->bindValue(':ville', $_POST['ville'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':code_postal', $_POST['code_postal'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':adresse', $_POST['adresse'], PDO::PARAM_STR);
-                $inscrireAnnonce->bindValue(':photo', $photo_bdd1,$photo_bdd2,$photo_bdd3, $photo_bdd4, $photo_bdd5, PDO::PARAM_STR);
+                $inscrireAnnonce->bindParam(':photo_id', $photo_id);
                 $inscrireAnnonce->bindValue(':prix', $_POST['prix'], PDO::PARAM_INT);
                 $inscrireAnnonce->execute();
             }
@@ -177,9 +224,9 @@ if (isset($_GET['action'])) {
 
     $pays = (isset($annonceActuel['pays'])) ? $annonceActuel['pays'] : "";
     $ville = (isset($annonceActuel['ville'])) ? $annonceActuel['ville'] : "";
-    $code_postal = (isset($annonceActuel['code_postal'])) ? $annonceActuel['code_postal'] : "";
+    $cp = (isset($annonceActuel['code_postal'])) ? $annonceActuel['code_postal'] : "";
     $adresse = (isset($annonceActuel['adresse'])) ? $annonceActuel['adresse'] : "";
-    $photo = (isset($annonceActuel['photo'])) ? $annonceActuel['photo'] : "";
+    $photoActuelle = (isset($annonceActuel['photo'])) ? $annonceActuel['photo'] : "";
     $prix = (isset($annonceActuel['prix'])) ? $annonceActuel['prix'] : "";
 
     // Requete pour effectuer une Supression
@@ -197,8 +244,8 @@ require_once('includeAdmin/header.php');
 
 <?= $erreur ?>
 <?= $content ?>
-<!-- Utilisation de la fonction personnalisée debug pour savoir ce qui a été récupéré avec $_POST, pour comprendre en cas de probléme, ou est que cela se situe -->
-<!-- <?= debug($_POST) ?> -->
+
+<!-- <?= debug($_POST) ?>  -->
 
 <?php if (isset($_GET['action']) && isset($_GET['page'])) : ?>
 <div class="blockquote alert alert-dismissible fade show mt-5 shadow border border-warning rounded" role="alert">
@@ -210,11 +257,41 @@ require_once('includeAdmin/header.php');
 </div>
 <?php endif; ?>
 
+<!-- AFFICHAGE ANNONCE -->
+<?php if (isset($_GET['action']) && $_GET['action'] == 'see'): ?>
+    <div class="text-center py-5 col-10 mx-auto">
+        <div class="d-md-flex">
+            <div class="card shadow p-3 mb-5 bg-white rounded">
+                <img src="<?= URL . 'img/' . $detail['photo'] ?>" class="card-img-top maxImg" alt="image du produit">
+                <div>
+                    <img src="<?= URL . 'img/' . $test[''] ?>" alt="">
+                    <img src="" alt="">
+                    <img src="" alt="">
+                    <img src="" alt="">
+                    <img src="" alt="">
+                </div>
+            </div>
+            <div class="col-5 mx-auto text-center">
+                <h1 class=""><?= $detail['titre'] ?></h1>
+                <h2 class="mt-3"><?= $detail['description_courte']?></h2>
+                <p class=""><?= $detail['description_longue']?></p>
+                <h2 class="">Prix: <?= $detail['prix'] . " €" ?></h2>
+            </div>
+        </div>
+        <div class="d-flex mx-auto">
+            <h3>Adresse: <?= $detail['adresse'] . " |"?></h3>
+            <h3 class="ml-2">Ville: <?= $detail['ville'] . " |"?></h3>
+            <h3 class="ml-2">Code-Postal: <?= $detail['cp'] . " |"?></h3>
+            <h3 class="ml-2">Pays: <?= $detail['pays'] ?></h3>
+        </div>
+    </div>
+<?php endif; ?>
+<!-- Titre Formulaire -->
 <?php if(isset($_GET['action'])): ?>
 <h2 class="pt-5">Formulaire <?= ($_GET['action'] == 'add') ? "d'ajout" : "de modification" ?> des annonces</h2>
 
 <form id="monForm" class="my-5" method="POST" action="" enctype="multipart/form-data">
-    <!-- Important d'incorporer l'id_annonce pour effectuer des modifications et de le cacher avec hidden  -->
+    <!-- id_annonce pour effectuer des modifications  -->
     <input type="hidden" name="id_annonce" value="<?= $id_annonce ?>">
 
     <div class="row mt-5">
@@ -275,7 +352,7 @@ require_once('includeAdmin/header.php');
                 <label class="form-label" for="code_postal">
                     <div class="badge badge-dark text-wrap">Code Postal</div>
                 </label>
-                <input class="form-control" type="text" name="code_postal" id="code_postal" placeholder="Code postal" value="<?= $code_postal ?>">
+                    <input class="form-control" type="text" name="code_postal" id="cp"  placeholder="cp" value="<?= $cp?>">
             </div>
 
             <div class="col-md-4 mt-5">
@@ -303,7 +380,7 @@ require_once('includeAdmin/header.php');
             <input class="form-control" type="file" name="photo" id="photo" placeholder="Photo">
         </div>
         <!-- ----------------- -->
-        <!-- si la variable $photo a trouvé une information en BDD, on exécute ce qui suit dans les accolades -->        
+        <!-- -->        
         <?php if(!empty($photo)): ?>
         <div class="mt-4">
             <p>Vous pouvez changer d'image
@@ -311,8 +388,8 @@ require_once('includeAdmin/header.php');
             </p>
         </div>
         <?php endif; ?>
-        <!-- pour modifier la photo existante par une nouvelle (voir ligne 56) -->
-        <input type="hidden" name="photoActuelle" value="<?= $photo ?>">
+        <!-- pour modifier la photo existante par une nouvelle  -->
+        <input type="hidden" name="photoActuelle" value="<?= $photoActuelle ?>">
         <!-- -------------------- -->
         <div class="col-md-4">
             <label class="form-label" for="prix">
@@ -320,8 +397,6 @@ require_once('includeAdmin/header.php');
             </label>
             <input class="form-control" type="text" name="prix" id="prix" placeholder="Prix" value="<?= $prix ?>">
         </div>
-
-
     </div>
 
     <div class="col-md-1 mt-5">
@@ -366,7 +441,7 @@ require_once('includeAdmin/header.php');
                         <td><?= $value ?></td>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                <!-- Crayon pour modifier (UPDATE) et pobelle pour supprimer (DELETE) -->
+                <!-- Crayon pour modifier (UPDATE) et poubelle pour supprimer (DELETE) -->
                 <td><a href='?action=update&id_annonce=<?= $annonce['id_annonce'] ?>'><i class="bi bi-pen-fill text-warning"></i></a></td>
                 <td><a data-href="?action=delete&id_annonce=<?= $annonce['id_annonce'] ?>" data-toggle="modal" data-target="#confirm-delete"><i class="bi bi-trash-fill text-danger" style="font-size: 1.5rem;"></i></a></td>
             </tr>
@@ -374,26 +449,21 @@ require_once('includeAdmin/header.php');
     </tbody>
 </table>
 <!-- Debut de pagignation -->
-<nav>
+<nav aria-label="">
     <ul class="pagination justify-content-end">
-        <!-- dans le cas ou nous sommes sur la page 1, il ne faudra pas pouvoir cliquer sur l'onglet précédent, sinon on sera expédiée à la page 0 !  Il faut donc dans ce cas (voir ternaire) si on est sur la page 1 , -->
-        <li class="page-item <?= ($pageCourante == 1 ) ? 'disabled' : "" ?>">
-        <!-- si on clique sur la fleche précédente, c'est pour aller à la page précédent, dans ce cas, on soustrait à page Courante, la valeur de 1 (si pageCourante = 4, on retournera à la page 3) -->
-            <a class="page-link text-dark" href="?page=<?= $pageCourante -1?>" aria-label="Previous">
+        <li class="page-item <?= ($pageCourante == 1) ? 'disabled' : "" ?> ">
+            <a class="page-link text-dark" href="?page=<?= $pageCourante - 1 ?>" aria-label="Previous">
                 <span aria-hidden="true">précédente</span>
                 <span class="sr-only">Previous</span>
             </a>
         </li>
-        <!-- AFFICHE LE NOMBRE DE PAGES pour cliquer celle que l'on veut -->
         <?php for($page = 1; $page <= $nombrePages; $page++): ?>
-        <li class="mx-1 page-item ">
-            <a class="btn btn-outline-dark <?= ($pageCourante == $page) ?'active' : "" ?>" href="?page=<?= $page ?>"><?= $page ?></a>
+        <li class="mx-1 page-item">
+            <a class="btn btn-outline-success <?= ($pageCourante == $page) ? 'active' : "" ?>" href="?page=<?= $page ?>"><?= $page ?> </a>
         </li>
         <?php endfor; ?>
-
-        <!-- FIN NOMBRE DE PAGES -->
         <li class="page-item <?= ($pageCourante == $nombrePages)? 'disabled' : '' ?>">
-            <a class="page-link text-dark" href="?page=<?= $pageCourante +1?>" aria-label="Next">
+            <a class="page-link text-dark" href="?page=<?= $pageCourante + 1 ?>" aria-label="Next">
                 <span aria-hidden="true">suivante</span>
                 <span class="sr-only">Next</span>
             </a>
@@ -401,13 +471,7 @@ require_once('includeAdmin/header.php');
     </ul>
 </nav>
 
-<!-- <img class="img-fluid" src="" width="50"> -->
-
-<!-- <td><a href=''><i class="bi bi-pen-fill text-warning"></i></a></td>-->
-<!-- <td><a data-href="" data-toggle="modal" data-target="#confirm-delete"><i class="bi bi-trash-fill text-danger" style="font-size: 1.5rem;"></i></a></td> -->
-
-<!-- modal suppression codepen https://codepen.io/lowpez/pen/rvXbJq -->
-
+<!-- MODAL DE SUP/MDF-->
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
