@@ -8,16 +8,17 @@ require_once('include/header.php');
 ?>
 
 </div>
-<div class="container-fluid">
+<!-- Rubrique des différents catégories -->
+    <div class="container-fluid">
 		<div class="row justify-content-center">
 			<div class="col-md-7">
             <ul class="nav nav-pills ">
-            <li class="nav-item">
+                <li class="nav-item">
                 <?php while($menuCategorie = $afficheMenuCategories->fetch(PDO::FETCH_ASSOC)): ?>
                     <a class="btn btn-dark my-2" href="<?= URL ?>?categorie=<?= $menuCategorie['id_categorie'] ?>"><?= $menuCategorie['titre'] ?></a>
                 <?php endwhile; ?>
-            </li>
-        </ul>
+                </li>
+            </ul>
 			</div>
 		</div>
 	</div>
@@ -90,14 +91,10 @@ require_once('include/header.php');
         </div>
 
         <!-- ----------------------- -->
-        <!-- pour afficher les vetements  par titre -->
+        <!-- pour afficher les annonces  par titre -->
         <?php elseif(isset($_GET['titre'])): ?>
 
         <div class="col-md-8">
-
-            <div class="text-center my-5">
-                <img class='img-fluid' src="img/la_boutique_bis.webp" alt="Bandeau de La Boutique" loading="lazy">
-            </div>
 
             <div class="row justify-content-around">
 

@@ -42,12 +42,12 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-  <ul class="navbar-nav mr-auto">
+  <ul class="navbar-nav ">
       <li class="nav-item mt-4 col-md-12 ">
       <a><button class="btn btn-outline-dark" data-toggle="modal" id="model" data-target="#connexionModal">Déposer une annonce<?= (isset($_SESSION['membre'])) ? '<style>#model{ display: none; }</style>' : ''; ?></button> </a>
       </li>
-      <li class=" mt-4 col-md-8 ">
-        <div class="row  "><a href="<?= URL ?>deposer_annonce.php"><button class="shadow btn btn-dark btn-outline-success  " id="depose">Déposez votre annonce <?= (!isset($_SESSION['membre'])) ? '<style>#depose{ display: none; }</style>' : ''; ?></button></a></div>
+      <li class=" mt-2 col-md-9 ">
+        <div class="mr-1"><a href="<?= URL ?>deposer_annonce.php"><button class="shadow btn btn-dark btn-outline-success  " id="depose">Déposez votre annonce <?= (!isset($_SESSION['membre'])) ? '<style>#depose{ display: none; }</style>' : ''; ?></button></a></div>
         </li>
       <!-- ---------- -->
     </ul>
@@ -55,7 +55,7 @@
       <!-- -------------------------- -->
     <?php if(internauteConnecte()): ?>
       <!-- si l'internaute est connecté il aura accés aux pages profil, panier et un bouton de deconnexion  (mais pas aux autres) -->
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown mr-1">
         <a class="nav-link dropdown-toggle btn btn-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <button type="button" class="btn btn-dark">Espace <strong><?= $_SESSION['membre']['pseudo'] ?></strong></button>
         </a>

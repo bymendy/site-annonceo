@@ -44,7 +44,7 @@ if (isset($_GET['action'])) {
         if (!isset($_POST['titre']) || iconv_strlen($_POST['titre']) < 3 || iconv_strlen($_POST['titre']) > 20) {
             $erreur .= '<div class="alert alert-danger" role="alert">Erreur format titre !</div>';
         }
-        if (!isset($_POST['description']) || iconv_strlen($_POST['description']) < 3 || iconv_strlen($_POST['description']) > 50) {
+        if (!isset($_POST['description']) || iconv_strlen($_POST['description']) < 3 || iconv_strlen($_POST['description']) > 250) {
             $erreur .= '<div class="alert alert-danger" role="alert">Erreur format description !</div>';
         }
         if (!isset($_POST['description_longue']) || iconv_strlen($_POST['description_longue']) < 3 || iconv_strlen($_POST['description_longue']) > 500) {
@@ -126,7 +126,7 @@ if (isset($_GET['action'])) {
                 $modifAnnonce->bindValue(':ville', $_POST['ville'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':code_postal', $_POST['code_postal'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':adresse', $_POST['adresse'], PDO::PARAM_STR);
-                $modifAnnonce->bindValue(':photo', $photo_bdd, PDO::PARAM_STR);
+                $modifAnnonce->bindValue(':photo', $photo_bdd1, PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':prix', $_POST['prix'], PDO::PARAM_INT);
                 $modifAnnonce->execute();
                 // Requete pour afficher un message personnaliser lorsque la modification à bien été réussie
@@ -155,7 +155,7 @@ if (isset($_GET['action'])) {
                 $inscrireAnnonce->bindValue(':ville', $_POST['ville'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':code_postal', $_POST['code_postal'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':adresse', $_POST['adresse'], PDO::PARAM_STR);
-                $inscrireAnnonce->bindValue(':photo', $photo_bdd, PDO::PARAM_STR);
+                $inscrireAnnonce->bindValue(':photo', $photo_bdd1,$photo_bdd2,$photo_bdd3, $photo_bdd4, $photo_bdd5, PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':prix', $_POST['prix'], PDO::PARAM_INT);
                 $inscrireAnnonce->execute();
             }

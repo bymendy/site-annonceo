@@ -26,27 +26,27 @@ if(isset($_GET['categorie'])){
 
 // -----------------------------------------------------------------------------------
 
-// tout l'affichage par public
-if(isset($_GET['public'])){
-    // pagination annonces par public
+// tout l'affichage par annonce
+if(isset($_GET['annonce'])){
+    // pagination annonces par annonce
     
-    // fin pagination annonces par public
+    // fin pagination annonces par annonce
 
-    // affichage des annonces par public
-    // requete qui va cibler tous les annonces qui ont en commun le public récupéré dans l'URL
+    // affichage des annonces par annonce
+    // requete qui va cibler tous les annonces qui ont en commun le annonce récupéré dans l'URL
     $afficheAnnonces = $pdo->query(" SELECT * FROM annonce WHERE titre = '$_GET[titre]' ORDER BY prix ASC ");
-    // fin affichage des annonces par public
+    // fin affichage des annonces par annonce
 
-    // affichage du public dans le <h2>
-    $afficheTitrePublic = $pdo->query(" SELECT titre FROM annonce WHERE titre = '$_GET[titre]' ");
-    $titrePublic = $afficheTitrePublic->fetch(PDO::FETCH_ASSOC);
-    // fin du </h2> pour le public
+    // affichage de l'annonce dans le <h2>
+    $afficheTitreAnnonce = $pdo->query(" SELECT titre FROM annonce WHERE titre = '$_GET[titre]' ");
+    $titreAnnonce = $afficheTitreAnnonce->fetch(PDO::FETCH_ASSOC);
+    // fin du </h2> pour le annonce
 
-    // pour les onglets publics
-    $pageTitle = "Nos vetements " . ucfirst($_GET['public']) . 's'; 
-    // fin onglets publics
+    // pour les onglets annonces
+    $pageTitle = "Nos vetements " . ucfirst($_GET['annonce']) . 's'; 
+    // fin onglets annonces
 }
-// fin affichage par public
+// fin affichage par annonce
 
 // ---------------------------------------------------------------------------------------
 // Tout ce qui concerne la fiche annonce

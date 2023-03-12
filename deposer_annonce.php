@@ -35,16 +35,16 @@ if ($_POST) {
     if (!isset($_POST['categorie'])) {
         $erreur .= '<div class="alert alert-danger" role="alert">Erreur format categorie !</div>';
     }
-    if (!isset($_POST['titre']) || strlen($_POST['titre']) < 3 || strlen($_POST['titre']) > 20) {
+    if (!isset($_POST['titre']) || strlen($_POST['titre']) < 3 || strlen($_POST['titre']) > 30) {
         $erreur .= '<div class="alert alert-danger" role="alert">Erreur format titre !</div>';
     }
     if (!isset($_POST['description_courte']) || strlen($_POST['description_courte']) < 3 || strlen($_POST['description_courte']) > 255) {
         $erreur .= '<div class="alert alert-danger" role="alert">Erreur format description_courte !</div>';
     }
-    if (!isset($_POST['description_longue']) || strlen($_POST['description_longue']) < 3 || strlen($_POST['description_longue']) > 500) {
+    if (!isset($_POST['description_longue']) || strlen($_POST['description_longue']) < 3 || strlen($_POST['description_longue']) > 2000) {
         $erreur .= '<div class="alert alert-danger" role="alert">Erreur format description_longue !</div>';
     }
-    if (!isset($_POST['prix']) || !preg_match('#^[0-9]{1,5}$#', $_POST['prix'])) {
+    if (!isset($_POST['prix']) || !preg_match('#^[0-9]{1,7}$#', $_POST['prix'])) {
         $erreur .= '<div class="alert alert-danger" role="alert">Erreur format prix !</div>';
     }
     if (!isset($_POST['pays']) || strlen($_POST['pays']) < 3 || strlen($_POST['pays']) > 20) {
