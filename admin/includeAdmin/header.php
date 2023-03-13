@@ -32,11 +32,18 @@
     <div class="bg-dark border-right" id="sidebar-wrapper">
       <div class="sidebar-heading text-warning">Annonceo Admin </div>
       <div class="list-group list-group-flush">
+        <!-- Gestion Membre -->
         <a href="<?= URL ?>admin/gestion_membre.php" class="list-group-item list-group-item-action bg-dark text-light py-5"><button type="button" class="btn btn-outline-warning text-light">&nbspGestion &nbspdes&nbsp membres&nbsp</button></a>
+        <!-- Gestion Annonce -->
         <a href="<?= URL ?>admin/gestion_annonce.php" class="list-group-item list-group-item-action bg-dark text-light py-5"><button type="button" class="btn btn-outline-warning text-light">&nbspGestion &nbsp&nbspdes&nbsp&nbsp annonces&nbsp</button></a>
+        <!-- Gestion Categorie -->
         <a href="<?= URL ?>admin/gestion_categorie.php" class="list-group-item list-group-item-action bg-dark text-light py-5"><button type="button" class="btn btn-outline-warning text-light">Gestion des catégories</button></a>
+        <!-- Gestion Commentaires -->
         <a href="<?= URL ?>admin/gestion_commentaires.php" class="list-group-item list-group-item-action bg-dark text-light py-4"><button type="button" class="btn btn-outline-warning text-light">&nbspGestion des commentaires&nbsp</button></a>
-        <a href="<?= URL ?>index.php" class="list-group-item list-group-item-action bg-dark text-light py-5"><button type="button" class="btn btn-outline-warning text-light">Retour Accueil Boutique</button></a>
+        <!-- Gestion Notes -->
+        <a href="<?= URL ?>admin/gestion_notes.php" class="list-group-item list-group-item-action bg-dark text-light py-5"><button type="button" class="btn btn-outline-warning text-light">Gestion des notes</button></a>
+        <!-- Retour Home  -->
+        <a href="<?= URL ?>index.php" class="list-group-item list-group-item-action bg-dark text-light py-5"><button type="button" class="btn btn-outline-warning text-light">Retour Accueil Annonceo</button></a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -67,7 +74,7 @@
           <a class="dropdown-item" href="<?= URL ?>admin/gestion_membre.php">Gestion des membres</a>
           <a class="dropdown-item" href="<?= URL ?>admin/gestion_annonce.php">Gestion des annonces</a>
           <a class="dropdown-item" href="<?= URL ?>admin/gestion_categorie.php">Gestion des catégories</a>
-          <a class="dropdown-item" href="<?= URL ?>admin/gestion_detail_commande.php">Détail des commentaires</a>
+          <a class="dropdown-item" href="<?= URL ?>admin/gestion_notes.php">Détail des commentaires</a>
           <a class="dropdown-item" href="<?= URL ?>admin/gestion_detail_commande.php">Détail des notes</a>
 
         </div>

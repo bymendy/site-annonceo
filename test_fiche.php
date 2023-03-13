@@ -202,13 +202,13 @@ include_once('include/header.php');
     <div class="col">
         <!-- carrousel photos -->
         <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 22rem;">
-        <img src=" <?= URL . 'img/' . $detail['photo'] ?>" class="card-img-top" alt="image annonce" <?= substr($detail['photo'], 0,-1) . " " .  $detail['titre'] ?> 
-    
-        </div>
-        </div>
-    
+                    <img src=" <?= URL . 'img/' . $detail['photo'] ?>" class="card-img-top" alt="image annonce" <?= substr($detail['photo'], 0,-1) . " " .  $detail['titre'] ?> 
 
-        <div class="col ">
+    </div>
+    </div>
+
+
+    <div class="col ">
         <p class="h5 "><?= $arrayannonce['description_longue'] ?></p>
         <div class="justify-content-center  ">
             <br><br>
@@ -226,10 +226,10 @@ include_once('include/header.php');
                     </div>
 
                 </div>
-                </div>
             </div>
-            </div>
+
         </div>
+
     </div>
 
     <!-- Modal -->
@@ -569,5 +569,5 @@ include_once('include/header.php');
 
 <br><br><br><br>
 
-
-    <?php require_once('include/footer.php') ?>
+<?php
+include_once('include/footer.php');

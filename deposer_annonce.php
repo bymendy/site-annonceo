@@ -19,18 +19,6 @@ $adresse = (isset($_POST['adresse'])) ? $_POST['adresse'] : "";
 $cp = (isset($_POST['cp'])) ? $_POST['cp'] : "";
 
 if ($_POST) {
-    if(isset($_POST['valider'])) {
-        $annonce_deposee = true; // une variable pour indiquer si l'annonce a été déposée avec succès ou non
-
-    }
-    echo (isset($annonce_deposee)) ? '<div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
-    <p>Votre annonce a été déposée avec succès 😉 !</p> 
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>' : '';
-
-
 
     if (!isset($_POST['categorie'])) {
         $erreur .= '<div class="alert alert-danger" role="alert">Erreur format categorie !</div>';
@@ -133,7 +121,7 @@ if ($_POST) {
             $inscrireAnnonce->execute();
             $content .= '<div class="alert alert-success alert-dismissible fade show
             mt-5" role="alert">
-            <strong>Félicitations !</strong> Ajout de l\'annonce réussie !
+            <strong>Félicitations !</strong> Votre annonce a été déposée avec succès 😉 !
             <button type="button" class="close" data-dismiss="alert" arialabel="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -146,11 +134,16 @@ if ($_POST) {
 require_once('include/header.php');
 ?>
 </div>
+<?= $content ?>
+<!-- Banniere ANnnonce -->
 <div class=" my-5">
                 <img class='img-fluid' src="img/banniere_depose.png" alt="Bandeau de La Boutique" loading="lazy">
             </div>
 
 <div class="container">
+
+
+
 <!-- FORMULAIRE ANNONCE -->
 <h2 class="pt-5">Créez votre annonce en quelques clics</h2>
 <?php if(internauteConnecte()) : ?>
