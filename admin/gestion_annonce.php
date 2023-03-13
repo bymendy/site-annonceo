@@ -17,10 +17,6 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
 // Faire une variable listeCategorie et appliquer la requete SQL
 $listeCategorie = $pdo->query("SELECT * FROM categorie");
 
-
-
-
-
 $queryAnnonces = $pdo->query("SELECT COUNT(id_annonce) AS nombreAnnonces FROM annonce" );
 $resultatAnnonces = $queryAnnonces->fetch();
 $nombreAnnonces = (int) $resultatAnnonces['nombreAnnonces'];
@@ -31,6 +27,7 @@ $nombrePages = ceil($nombreAnnonces / $parPage);
 $premierAnnonce = ($pageCourante - 1) * $parPage;
 
 // fin pagination
+$description_courte = "";
 $photoActuelle = "";
 
 $photoBdd1 = "";
@@ -51,7 +48,7 @@ if (isset($_GET['action'])) {
         if (!isset($_POST['titre']) || iconv_strlen($_POST['titre']) < 3 || iconv_strlen($_POST['titre']) > 20) {
             $erreur .= '<div class="alert alert-danger" role="alert">Erreur format titre !</div>';
         }
-        if (!isset($_POST['description']) || iconv_strlen($_POST['description']) < 3 || iconv_strlen($_POST['description']) > 500) {
+        if (!isset($_POST['description_courte']) || iconv_strlen($_POST['description_courte']) < 3 || iconv_strlen($_POST['description_courte']) > 500) {
             $erreur .= '<div class="alert alert-danger" role="alert">Erreur format description !</div>';
         }
         if (!isset($_POST['description_longue']) || iconv_strlen($_POST['description_longue']) < 3 || iconv_strlen($_POST['description_longue']) > 1000) {
@@ -147,14 +144,14 @@ if (isset($_GET['action'])) {
 
         // *** Fin traitement photo
         
-        // Condition si la personne à bien renseigner les champs et ne s'est pas tromper
+        // Condition si user à bien renseigner les champs et ne s'est pas tromper
         if (empty($erreur)) {
             // si dans l'URL action == update, on entame une procédure de modification
             if($_GET['action'] == 'update'){
                 $modifAnnonce = $pdo->prepare("UPDATE annonce SET id_annonce = :id_annonce, titre = :titre, description_courte = :description_courte, description_longue = :description_longue, prix = :prix, pays = :pays, ville = :ville, adresse = :adresse, cp = :code_postal, prix = :prix, categorie_id = :categorie_id, photo = :photo  WHERE id_annonce = :id_annonce");
                 $modifAnnonce->bindValue(':id_annonce', $_POST['id_annonce'], PDO::PARAM_INT);
                 $modifAnnonce->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
-                $modifAnnonce->bindValue(':description', $_POST['description'], PDO::PARAM_STR);
+                $modifAnnonce->bindValue(':description_courte', $_POST['description_courte'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':description_longue', $_POST['description_longue'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':prix', $_POST['prix'], PDO::PARAM_STR);
                 $modifAnnonce->bindValue(':pays', $_POST['pays'], PDO::PARAM_STR);
@@ -172,7 +169,7 @@ if (isset($_GET['action'])) {
 
                 // Requete pour afficher un message personnaliser lorsque la modification à bien été réussie
                 $content .= '<div class="alert alert-success alert-dismissible fade show mt-5" role="alert">
-                        <strong>Félicitations !</strong> Modification du annonce '. $annonce['titre'] .' réussie !
+                        <strong>Félicitations !</strong> Modification de l\'annonce '. $annonce['titre'] .' réussie !
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -189,12 +186,12 @@ if (isset($_GET['action'])) {
                 $inscrirePhoto->bindParam(':photo5', $photoBdd5);
                 $inscrirePhoto->execute();
 
-                $inscrireAnnonce = $pdo->prepare(" INSERT INTO annonce ( membre_id, categorie_id, titre, description_courte, description_longue, pays, ville, cp, adresse, photo, prix, date_enregistrement) VALUES (:membre_id, :categorie, :titre, :description, :description_longue, :pays, :ville, :code_postal, :adresse, :photo, :prix, NOW(), :photo_id) ");
+                $inscrireAnnonce = $pdo->prepare(" INSERT INTO annonce ( membre_id, categorie_id, titre, description_courte, description_longue, pays, ville, cp, adresse, photo, prix, date_enregistrement) VALUES (:membre_id, :categorie, :titre, :description_courte, :description_longue, :pays, :ville, :code_postal, :adresse, :photo, :prix, NOW(), :photo_id) ");
                 $inscrireAnnonce->bindValue(':categorie', $_POST['categorie'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':membre_id', $_SESSION['membre']['id_membre'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':titre', $_POST['titre'], PDO::PARAM_STR);
 
-                $inscrireAnnonce->bindValue(':description', $_POST['description'], PDO::PARAM_STR);
+                $inscrireAnnonce->bindValue(':description_courte', $_POST['description_courte'], PDO::PARAM_STR);
                 $inscrireAnnonce->bindValue(':description_longue', $_POST['description_longue'], PDO::PARAM_STR);
 
 
@@ -219,7 +216,7 @@ if (isset($_GET['action'])) {
     $categorie = (isset($annonceActuel['categorie'])) ? $annonceActuel['categorie'] : "";
     $titre = (isset($annonceActuel['titre'])) ? $annonceActuel['titre'] : "";
 
-    $description = (isset($annonceActuel['description'])) ? $annonceActuel['description'] : "";
+    $description_courte = (isset($annonceActuel['description_courte'])) ? $annonceActuel['description_courte'] : "";
     $description_longue = (isset($annonceActuel['description_longue'])) ? $annonceActuel['description_longue'] : "";
 
     $pays = (isset($annonceActuel['pays'])) ? $annonceActuel['pays'] : "";
@@ -289,7 +286,7 @@ require_once('includeAdmin/header.php');
 <!-- Titre Formulaire -->
 <?php if(isset($_GET['action'])): ?>
 <h2 class="pt-5">Formulaire <?= ($_GET['action'] == 'add') ? "d'ajout" : "de modification" ?> des annonces</h2>
-
+<!-- FORMULAIRE -->
 <form id="monForm" class="my-5" method="POST" action="" enctype="multipart/form-data">
     <!-- id_annonce pour effectuer des modifications  -->
     <input type="hidden" name="id_annonce" value="<?= $id_annonce ?>">
@@ -301,9 +298,7 @@ require_once('includeAdmin/header.php');
             </label>
             <!-- Mettre une balise select et faire une boucle While -->
             <select class="form-control"  name="categorie" id="categorie">
-
-            <?php 
-            
+            <?php             
             while($categorie = $listeCategorie->fetch(PDO::FETCH_ASSOC)){
                 echo "<option value='$categorie[id_categorie]'> $categorie[titre] </option> ";
             }
@@ -322,10 +317,10 @@ require_once('includeAdmin/header.php');
 
     <div class="row justify-content-around mt-5">
         <div class="col-md-12">
-            <label class="form-label" for="description">
+            <label class="form-label" for="description_courte">
                 <div class="badge badge-dark text-wrap">Description</div>
             </label>
-            <textarea class="form-control" name="description" id="description" placeholder="Description" rows="5" ><?= $description ?></textarea>
+            <textarea class="form-control" name="description_courte" id="description_courte" placeholder="Description" rows="5" ><?= $description_courte ?></textarea>
         </div>
     </div>
     <div class="row justify-content-around mt-5">
