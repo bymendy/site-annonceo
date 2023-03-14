@@ -20,6 +20,8 @@ $erreur_index = "";
 $validate = "";
 $validate_index = "";
 $content = "";
+$toutesAnnonces = ['1 = 1'];
+
 
 // protection des formulaires avec une foreach additionnée avec htmlspecialchars
 foreach($_POST as $key => $value){

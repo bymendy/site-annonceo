@@ -43,7 +43,7 @@ if(isset($_GET['annonce'])){
     // fin du </h2> pour le annonce
 
     // pour les onglets annonces
-    $pageTitle = "Nos vetements " . ucfirst($_GET['annonce']) . 's'; 
+    $pageTitle = "Nos annonces " . ucfirst($_GET['annonce']) . 's'; 
     // fin onglets annonces
 }
 // fin affichage par annonce
