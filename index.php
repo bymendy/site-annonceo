@@ -16,13 +16,33 @@ $afficheAnnonce6 = $pdo->query('SELECT * FROM annonce');
 
 
 // si l'annonce n'existe pas
-
 if (isset($_GET['annonce']) && $_GET['annonce'] == "inexistant") {
     $erreur .= "<div class='col-md-6 mx-auto alert alert-danger text-center disparition'>
                         Annonce inexistante
                     </div>";
 }
+// pagination selon les annonces
 
+// si un indice page existe dans l'url et qu'on retrouve une valeur dedans
+if(isset($_GET['page']) && !empty($_GET['page'])){
+    $pageCourante = (int) strip_tags($_GET['page']);
+}else{
+    // dans le cas ou aucune information n'a transité dans l'URL, $pageCourante prendra la valeur de defaut qui est 1
+    $pageCourante = 1;
+}
+// Faire une variable listeCategorie et appliquer la requete SQL
+$listeCategorie = $pdo->query("SELECT * FROM categorie");
+
+$queryAnnonces = $pdo->query("SELECT COUNT(id_annonce) AS nombreAnnonces FROM annonce" );
+$resultatAnnonces = $queryAnnonces->fetch();
+$nombreAnnonces = (int) $resultatAnnonces['nombreAnnonces'];
+// je veux que sur chaque page s'affiche 5 annonces
+$parPage =  5; 
+$nombrePages = ceil($nombreAnnonces / $parPage);
+//  definir la premiere annonce qui va s'afficher à chaque nouvelle page
+$premierAnnonce = ($pageCourante - 1) * $parPage;
+
+// fin pagination
 require_once('include/affichage.php');
 require_once('include/header.php');
 ?>
@@ -43,10 +63,6 @@ require_once('include/header.php');
 		</div>
 	</div>
 
-
-
-        
-
     <div class="row my-5">
 
         <!-- --------------------------- -->
@@ -65,8 +81,6 @@ require_once('include/header.php');
             </div>
 
             <div class="row justify-content-around text-center">
-
-
                 <?php while($annonce = $afficheAnnonces->fetch(PDO::FETCH_ASSOC)): ?>
                 <div class="card mx-3 shadow p-3 mb-5 bg-white rounded">
                     <a href="fiche_annonce.php?id_annonce= <?= $annonce['id_annonce']?>"><img src="<?= URL . 'img/' . $annonce['photo'] ?>" class="card-img-top" alt="Photo de <?= $annonce['titre'] ?>"></a>
@@ -77,35 +91,11 @@ require_once('include/header.php');
                         </h3>
                         <p class="card-text"><?= $annonce['description_courte'] ?></p>
                         <!-- Requete pour véhiculer l'id de chaque annonce et pouvoir l'afficher et basculer sur la page fiche annonce  -->
-                        <a href="fiche_annonce.php?id_annonce=<?= $annonce['id_annonce']?>" class="btn btn-outline-dark"><i class='bi bi-search'></i> Voir Annonce</a>
+                        <a href="<?= URL ?>fiche_annonce.php?id_annonce=<?= $annonce['id_annonce']?>" class="btn btn-outline-dark"><i class='bi bi-search'></i> Voir Annonce</a>
                     </div>
                 </div>
                 <?php endwhile; ?>
-
             </div>
-
-            <nav aria-label="">
-                <ul class="pagination justify-content-end">
-                    <li class="mx-1 page-item  ">
-                        <a class="page-link text-success" href="" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </li>
-                    <!--  -->
-                    <li class="mx-1 page-item ">
-                        <a class="btn btn-outline-success " href=""></a>
-                    </li>
-                    <!--  -->
-                    <li class="mx-1 page-item ">
-                        <a class="page-link text-success" href="" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
         </div>
 
         <!-- ----------------------- -->
@@ -115,7 +105,6 @@ require_once('include/header.php');
         <div class="col-md-8">
 
             <div class="row justify-content-around">
-
                 <h2 class="py-5">
                     <div class="badge badge-dark text-wrap">Annonce <?= ucfirst($titreAnnonce['titre']) ?>s </div>
                 </h2>
@@ -240,7 +229,8 @@ require_once('include/header.php');
         </div>
     </div>    
 
-    <?= $erreur ?>
+<?= $erreur ?>
+
 <!-- Titre  -->    
 <div class="py-5"> 
         <h2 class="text-center pb-5"> Découvrez toutes nos annonces !</h2>
@@ -311,13 +301,10 @@ while ($arrayAnnonce = $afficheAnnonce->fetch(PDO::FETCH_ASSOC)) :
 
 
 ?>
-    <!-- pagination -->
-
-    <!-- fin pagination -->
 
 <!-- AFFICHAGE DES ANNONCES  -->
 <div class="container py-5">
-<a class="btn border-bottom col-md-12 mt-1 mb-1  " href="ficheAnnonce.php?id_annonce=<?= $arrayAnnonce['id_annonce'] ?>">
+    <a class="btn border-bottom col-md-12 mt-1 mb-1  " href="ficheAnnonce.php?id_annonce=<?= $arrayAnnonce['id_annonce'] ?>">
                     <div class="row  align-items-center col-md-10  ">
                         <!-- Image -->
                         <div class="col-sm-6 align-self-center ">
@@ -345,5 +332,27 @@ while ($arrayAnnonce = $afficheAnnonce->fetch(PDO::FETCH_ASSOC)) :
                 </a>
 </div>
 <?php endwhile;   ?>
+<!-- Debut de pagignation -->
+<nav aria-label="">
+    <ul class="pagination justify-content-end">
+        <li class="page-item <?= ($pageCourante == 1) ? 'disabled' : "" ?> ">
+            <a class="page-link text-dark" href="?page=<?= $pageCourante - 1 ?>" aria-label="Previous">
+                <span aria-hidden="true">précédente</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <?php for($page = 1; $page <= $nombrePages; $page++): ?>
+        <li class="mx-1 page-item">
+            <a class="btn btn-outline-success <?= ($pageCourante == $page) ? 'active' : "" ?>" href="?page=<?= $page ?>"><?= $page ?> </a>
+        </li>
+        <?php endfor; ?>
+        <li class="page-item <?= ($pageCourante == $nombrePages)? 'disabled' : '' ?>">
+            <a class="page-link text-dark" href="?page=<?= $pageCourante + 1 ?>" aria-label="Next">
+                <span aria-hidden="true">suivante</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 
 <?php require_once('include/footer.php') ?>

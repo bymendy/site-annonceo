@@ -400,7 +400,7 @@ require_once('includeAdmin/header.php');
 
 </form>
 <?php endif; ?>
-
+<!-- Nombres d'Annonces en Base de données -->
 <?php $queryAnnonces = $pdo->query(" SELECT id_annonce FROM annonce "); ?>
 <h2 class="py-5">Nombre de Annonces en base de données: <?= $queryAnnonces->rowCount() ?></h2>
 
@@ -411,7 +411,7 @@ require_once('includeAdmin/header.php');
         </button>
     </a>
 </div>
-
+<!-- TABLEAU DES ANNONCES -->
 <table class="table table-dark text-center table-responsive">
     <!-- Complété pour n'afficher que 10 prduits dans le tableau le OFFST détermine quel annonce affichée dans la nouvelle page -->
     <?php $afficheAnnonces = $pdo->query("SELECT * FROM annonce ORDER BY prix ASC LIMIT $parPage OFFSET $premierAnnonce") ?>
@@ -466,24 +466,5 @@ require_once('includeAdmin/header.php');
     </ul>
 </nav>
 
-<!-- MODAL DE SUP/MDF-->
-<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                Supprimer article
-            </div>
-            <div class="modal-body">
-                Etes-vous sur de vouloir retirer cet article de votre panier ?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
-                <a class="btn btn-danger btn-ok">Supprimer</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- modal -->
 
 <?php require_once('includeAdmin/footer.php'); ?>
