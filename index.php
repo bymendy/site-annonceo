@@ -22,25 +22,23 @@ if (isset($_GET['annonce']) && $_GET['annonce'] == "inexistant") {
                     </div>";
 }
 // pagination selon les annonces
-
 // si un indice page existe dans l'url et qu'on retrouve une valeur dedans
 if(isset($_GET['page']) && !empty($_GET['page'])){
+
     $pageCourante = (int) strip_tags($_GET['page']);
 }else{
-    // dans le cas ou aucune information n'a transité dans l'URL, $pageCourante prendra la valeur de defaut qui est 1
+    // $pageCourante prendra la valeur de defaut qui est 1
     $pageCourante = 1;
 }
-// Faire une variable listeCategorie et appliquer la requete SQL
-$listeCategorie = $pdo->query("SELECT * FROM categorie");
-
-$queryAnnonces = $pdo->query("SELECT COUNT(id_annonce) AS nombreAnnonces FROM annonce" );
+$queryAnnonces = $pdo->query("SELECT COUNT(id_annonce) AS nombreAnnonces FROM Annonce" );
 $resultatAnnonces = $queryAnnonces->fetch();
 $nombreAnnonces = (int) $resultatAnnonces['nombreAnnonces'];
-// je veux que sur chaque page s'affiche 5 annonces
+// echo debug($nombreAnnonces);
+// je veux que sur chaque page s'affiche 5 Annonces
 $parPage =  5; 
 $nombrePages = ceil($nombreAnnonces / $parPage);
-//  definir la premiere annonce qui va s'afficher à chaque nouvelle page
 $premierAnnonce = ($pageCourante - 1) * $parPage;
+// fin pagination
 
 // fin pagination
 require_once('include/affichage.php');
@@ -297,19 +295,20 @@ while ($arrayAnnonce = $afficheAnnonce->fetch(PDO::FETCH_ASSOC)) :
     $allPhotos->bindValue(':id_photo', $arrayAnnonce['photo_id'], PDO::PARAM_INT);
     $allPhotos->execute();
 
-    $arrayPhotos = $allPhotos->fetch(PDO::FETCH_ASSOC);
+    $detail = $allPhotos->fetch(PDO::FETCH_ASSOC);
 
 
 ?>
 
 <!-- AFFICHAGE DES ANNONCES  -->
 <div class="container py-5">
+<?php $afficheAnnonces = $pdo->query("SELECT * FROM annonce ORDER BY prix ASC LIMIT $parPage OFFSET $premierAnnonce") ?>
     <a class="btn border-bottom col-md-12 mt-1 mb-1  " href="ficheAnnonce.php?id_annonce=<?= $arrayAnnonce['id_annonce'] ?>">
                     <div class="row  align-items-center col-md-10  ">
                         <!-- Image -->
                         <div class="col-sm-6 align-self-center ">
-                            <?php if ($arrayPhotos['photo1'] != "") :  ?>
-                                <img class='w-100' src="img/<?= $arrayPhotos['photo1'] ?>" alt="<?= $arrayAnnonce['titre'] ?>" title="<?= $arrayAnnonce['titre'] ?>">
+                            <?php if ($detail['photo1'] != "") :  ?>
+                                <img class='w-100' src="img/<?= $detail['photo1'] ?>" alt="<?= $arrayAnnonce['titre'] ?>" title="<?= $arrayAnnonce['titre'] ?>">
                             <?php else :  ?>
                                 <img class='w-50' src="img/" alt="" title="Image par défaut">
                             <?php endif;  ?>
@@ -333,21 +332,26 @@ while ($arrayAnnonce = $afficheAnnonce->fetch(PDO::FETCH_ASSOC)) :
 </div>
 <?php endwhile;   ?>
 <!-- Debut de pagignation -->
-<nav aria-label="">
-    <ul class="pagination justify-content-end">
-        <li class="page-item <?= ($pageCourante == 1) ? 'disabled' : "" ?> ">
-            <a class="page-link text-dark" href="?page=<?= $pageCourante - 1 ?>" aria-label="Previous">
+<nav>
+<ul class="pagination justify-content-end">
+
+        <li class="page-item <?= ($pageCourante == 1 ) ? 'disabled' : "" ?>">
+
+            <a class="page-link text-dark" href="?page=<?= $pageCourante -1?>" aria-label="Previous">
                 <span aria-hidden="true">précédente</span>
                 <span class="sr-only">Previous</span>
             </a>
         </li>
+        <!-- AFFICHE LE NOMBRE DE PAGES -->
         <?php for($page = 1; $page <= $nombrePages; $page++): ?>
-        <li class="mx-1 page-item">
-            <a class="btn btn-outline-success <?= ($pageCourante == $page) ? 'active' : "" ?>" href="?page=<?= $page ?>"><?= $page ?> </a>
+        <li class="mx-1 page-item <?= ($pageCourante == $page) ?'active' : "" ?>">
+            <a class="btn btn-outline-dark " href="?page=<?= $page ?>"><?= $page ?></a>
         </li>
         <?php endfor; ?>
+
+        <!-- FIN NOMBRE DE PAGES -->
         <li class="page-item <?= ($pageCourante == $nombrePages)? 'disabled' : '' ?>">
-            <a class="page-link text-dark" href="?page=<?= $pageCourante + 1 ?>" aria-label="Next">
+            <a class="page-link text-dark" href="?page=<?= $pageCourante +1?>" aria-label="Next">
                 <span aria-hidden="true">suivante</span>
                 <span class="sr-only">Next</span>
             </a>

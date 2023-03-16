@@ -19,7 +19,7 @@ $ficheAnnonce->bindValue(":id_annonce", $_GET['id_annonce'], PDO::PARAM_INT);
 $ficheAnnonce->execute();
 
 // pour exploiter les valeurs on doit pointer sur la méthode fetch
-$arrayAnnonce = $ficheAnnonce->fetch(PDO::FETCH_ASSOC);
+$arrayAnn = $ficheAnnonce->fetch(PDO::FETCH_ASSOC);
 // si on change la valeur du paramètre id_produit de l'URL et qu'on place un id_produit qui n'existe pas dans la table produit
 // alors $arrayProduit sera vide
 $ficheMembre = $pdo->prepare('SELECT * FROM membre INNER JOIN annonce ON membre_id=id_membre  WHERE id_annonce = :id_annonce');
@@ -34,21 +34,21 @@ $arrayPhoto = $affichePhoto->fetch(PDO::FETCH_ASSOC);
 
 
 $äfficheCategorie = $pdo->prepare('SELECT * FROM annonce WHERE categorie_id = :categorie_id AND id_annonce != :id_annonce');
-$äfficheCategorie->bindValue(":categorie_id", $arrayAnnonce['categorie_id'], PDO::PARAM_INT);
+$äfficheCategorie->bindValue(":categorie_id", $arrayAnn['categorie_id'], PDO::PARAM_INT);
 $äfficheCategorie->bindValue(":id_annonce", $_GET['id_annonce'], PDO::PARAM_INT);
 $äfficheCategorie->execute();
 
 
 $ficheAnnonce1 = $pdo->prepare('SELECT * FROM note WHERE membre_id2 = :id_membre');
-$ficheAnnonce1->bindValue(":id_membre", $arrayAnnonce['membre_id'], PDO::PARAM_INT);
+$ficheAnnonce1->bindValue(":id_membre", $arrayAnn['membre_id'], PDO::PARAM_INT);
 $ficheAnnonce1->execute();
 
 $arrayMembreNote = $ficheAnnonce1->fetch(PDO::FETCH_ASSOC);
 
 
-$arrayAdresse[] = $arrayAnnonce['adresse'];
-$arrayAdresse[] = $arrayAnnonce['cp'];
-$arrayAdresse[] = $arrayAnnonce['ville'];
+$arrayAdresse[] = $arrayAnn['adresse'];
+$arrayAdresse[] = $arrayAnn['cp'];
+$arrayAdresse[] = $arrayAnn['ville'];
 
 
 
@@ -81,7 +81,7 @@ include_once('include/header.php');
 
 <div class="d-flex justify-content-between">
     <div>
-        <h2><?php echo $arrayAnnonce['titre'] ?></h2>
+        <h2><?php echo $arrayAnn['titre'] ?></h2>
     </div>
     <!-- Button trigger modal -->
     <div>
@@ -210,23 +210,23 @@ include_once('include/header.php');
     <div class="justify-content-center my-2 p-5">
         <br><br>
         <div class="">
-            <p><i class="bi bi-calendar"></i> Date de publication: <?= $arrayAnnonce['date_enregistrement'] ?></p>
+            <p><i class="bi bi-calendar"></i> Date de publication: <?= $arrayAnn['date_enregistrement'] ?></p>
             <div>
                 <p><i class="bi bi-person-square"></i> <a class="link" role="button" data-toggle="modal" data-target="#membre"><?= $arrayMembre1['prenom'] ?></a> <?php echo ($arrayMembre1['id_membre']) ?> <i class="bi bi-star-fill" style="color: #FFD700"></i></p>
                 <div>
-                    <p><i class="bi bi-tag"></i><?php echo $arrayAnnonce['prix'] ?> €</p>
+                    <p><i class="bi bi-tag"></i><?php echo $arrayAnn['prix'] ?> €</p>
                 </div>
                 <div>
-                    <p><i class="bi bi-geo-fill"></i> Adresse: <?php echo $arrayAnnonce['adresse'] . ", ";
-                    echo $arrayAnnonce['cp'] . ", ";
-                    echo $arrayAnnonce['ville'] . " " ?></p>
+                    <p><i class="bi bi-geo-fill"></i> Adresse: <?php echo $arrayAnn['adresse'] . ", ";
+                    echo $arrayAnn['cp'] . ", ";
+                    echo $arrayAnn['ville'] . " " ?></p>
                 </div>
             </div>
         </div>
     </div>
     <!-- Description longue Annonce -->
     <div class="container ">
-        <div class="col w-100"><p class="h5 "><?= $arrayAnnonce['description_longue'] ?></p></div>
+        <div class="col w-100"><p class="h5 "><?= $arrayAnn['description_longue'] ?></p></div>
     
     </div>
 

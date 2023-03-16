@@ -223,20 +223,7 @@ require_once('include/header.php');
                     ?>
                 </select>
             </div>
-            <div class="col-md-4">
-                <label class="form-label" for="photo">
-                    <div class="badge badge-dark text-wrap">Photo Principale</div>
-                </label>
-                <input class="form-control" type="file" name="photo" id="photo" placeholder="Photo">
-                <?php if (!empty($photo)) : ?>
-                    <div class="mt-4">
-                        <p>Vous pouvez changer d'image
-                            <img src="<?= URL . 'img/' . $photo ?>" width="50px">
-                        </p>
-                    </div>
-                <?php endif; ?>
-                <input type="hidden" name="photoActuelle" value="<?= $photo ?>">
-            </div>
+
         </div>
         <div class="row mt-5">
             <div class="col-md-4">
@@ -249,7 +236,7 @@ require_once('include/header.php');
                 <label class="form-label" for="photo">
                     <div class="badge badge-dark text-wrap">Photo 2</div>
                 </label>
-                <input class="form-control" type="file" name="photo1" id="photo2" placeholder="Photo2">
+                <input class="form-control" type="file" name="photo2" id="photo2" placeholder="Photo2">
             </div>
             <div class="col-md-4">
                 <label class="form-label" for="photo">
