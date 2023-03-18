@@ -1,5 +1,8 @@
 <?php
 include_once('include/init.php');
+
+require_once('include/affichage.php');
+
 // le code PHP du fichier se situera entre init et header
 
 // la superglobale $_GET permet de récupérer les valeurs qui véhiculent dans les paramètres de l'URL
@@ -11,66 +14,66 @@ include_once('include/init.php');
 // pour récupérer les données de l'id_produit dans l'URL on crée la requête de sélection avec pour précision la valeur de l'id_produit qui circule dans l'URL
 $arrayAdresse[] = '';
 
-$pdoStatement = $pdoObject->prepare('SELECT * FROM annonce WHERE id_annonce = :id_annonce');
-$pdoStatement->bindValue(":id_annonce", $_GET['id_annonce'], PDO::PARAM_INT);
-$pdoStatement->execute();
+$ficheAnnonce = $pdo->prepare('SELECT * FROM annonce WHERE id_annonce = :id_annonce');
+$ficheAnnonce->bindValue(":id_annonce", $_GET['id_annonce'], PDO::PARAM_INT);
+$ficheAnnonce->execute();
 
 // pour exploiter les valeurs on doit pointer sur la méthode fetch
-$arrayannonce = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+$arrayAnn = $ficheAnnonce->fetch(PDO::FETCH_ASSOC);
 // si on change la valeur du paramètre id_produit de l'URL et qu'on place un id_produit qui n'existe pas dans la table produit
 // alors $arrayProduit sera vide
-$pdoStatement2 = $pdoObject->prepare('SELECT * FROM membre INNER JOIN annonce ON membre_id=id_membre  WHERE id_annonce = :id_annonce');
-$pdoStatement2->bindValue(":id_annonce", $_GET['id_annonce'], PDO::PARAM_INT);
-$pdoStatement2->execute();
-$arrayMembre1 = $pdoStatement2->fetch(PDO::FETCH_ASSOC);
+$ficheMembre = $pdo->prepare('SELECT * FROM membre INNER JOIN annonce ON membre_id=id_membre  WHERE id_annonce = :id_annonce');
+$ficheMembre->bindValue(":id_annonce", $_GET['id_annonce'], PDO::PARAM_INT);
+$ficheMembre->execute();
+$arrayMembre1 = $ficheMembre->fetch(PDO::FETCH_ASSOC);
 
-$pdoStatement3 = $pdoObject->prepare('SELECT * FROM photo INNER JOIN annonce ON photo_id=id_photo  WHERE id_annonce = :id_annonce');
-$pdoStatement3->bindValue(":id_annonce", $_GET['id_annonce'], PDO::PARAM_INT);
-$pdoStatement3->execute();
-$arrayphoto = $pdoStatement3->fetch(PDO::FETCH_ASSOC);
-
-
-$pdoStatement4 = $pdoObject->prepare('SELECT * FROM annonce WHERE categorie_id = :categorie_id AND id_annonce != :id_annonce');
-$pdoStatement4->bindValue(":categorie_id", $arrayannonce['categorie_id'], PDO::PARAM_INT);
-$pdoStatement4->bindValue(":id_annonce", $_GET['id_annonce'], PDO::PARAM_INT);
-$pdoStatement4->execute();
+$affichePhoto = $pdo->prepare('SELECT * FROM photo INNER JOIN annonce ON photo_id=id_photo  WHERE id_annonce = :id_annonce');
+$affichePhoto->bindValue(":id_annonce", $_GET['id_annonce'], PDO::PARAM_INT);
+$affichePhoto->execute();
+$arrayPhoto = $affichePhoto->fetch(PDO::FETCH_ASSOC);
 
 
-$pdoStatement1 = $pdoObject->prepare('SELECT * FROM note WHERE membre_id2 = :id_membre');
-$pdoStatement1->bindValue(":id_membre", $arrayannonce['membre_id'], PDO::PARAM_INT);
-$pdoStatement1->execute();
+$äfficheCategorie = $pdo->prepare('SELECT * FROM annonce WHERE categorie_id = :categorie_id AND id_annonce != :id_annonce');
+$äfficheCategorie->bindValue(":categorie_id", $arrayAnn['categorie_id'], PDO::PARAM_INT);
+$äfficheCategorie->bindValue(":id_annonce", $_GET['id_annonce'], PDO::PARAM_INT);
+$äfficheCategorie->execute();
 
-$arrayMembreNote = $pdoStatement1->fetch(PDO::FETCH_ASSOC);
+
+$ficheAnnonce1 = $pdo->prepare('SELECT * FROM note WHERE membre_id2 = :id_membre');
+$ficheAnnonce1->bindValue(":id_membre", $arrayAnn['membre_id'], PDO::PARAM_INT);
+$ficheAnnonce1->execute();
+
+$arrayMembreNote = $ficheAnnonce1->fetch(PDO::FETCH_ASSOC);
 
 
-$arrayAdresse[] = $arrayannonce['adresse'];
-$arrayAdresse[] = $arrayannonce['cp'];
-$arrayAdresse[] = $arrayannonce['ville'];
+$arrayAdresse[] = $arrayAnn['adresse'];
+$arrayAdresse[] = $arrayAnn['cp'];
+$arrayAdresse[] = $arrayAnn['ville'];
 
 
 
 if (isset($_POST['envoyercommentaire']) && $_POST['envoyercommentaire']) {
-    $pdoStatement5 = $pdoObject->prepare('INSERT INTO commentaire (membre_id, annonce_id, commentaire, date_enregistrement) VALUES (:membre_id, :annonce_id, :commentaire, :date_enregistrement)');
-    $pdoStatement5->bindValue(":membre_id", $_SESSION['membre']['id_membre'], PDO::PARAM_INT);
-    $pdoStatement5->bindValue(":annonce_id", $_GET['id_annonce'], PDO::PARAM_INT);
-    $pdoStatement5->bindValue(":commentaire", $_POST['messageCommentaire'], PDO::PARAM_STR);
-    $pdoStatement5->bindValue(":date_enregistrement", date('Y-m-d H:i:s'), PDO::PARAM_STR);
-    $pdoStatement5->execute();
+    $ficheAnnonce5 = $pdo->prepare('INSERT INTO commentaire (membre_id, annonce_id, commentaire, date_enregistrement) VALUES (:membre_id, :annonce_id, :commentaire, :date_enregistrement)');
+    $ficheAnnonce5->bindValue(":membre_id", $_SESSION['membre']['id_membre'], PDO::PARAM_INT);
+    $ficheAnnonce5->bindValue(":annonce_id", $_GET['id_annonce'], PDO::PARAM_INT);
+    $ficheAnnonce5->bindValue(":commentaire", $_POST['messageCommentaire'], PDO::PARAM_STR);
+    $ficheAnnonce5->bindValue(":date_enregistrement", date('Y-m-d H:i:s'), PDO::PARAM_STR);
+    $ficheAnnonce5->execute();
 }
 if (isset($_POST['envoyernote']) && $_POST['envoyernote']) {
-    $pdoStatement6 = $pdoObject->prepare('INSERT INTO note (membre_id1, membre_id2, note, avis, date_enregistrement) VALUES (:membre_id1, :membre_id2, :note, :avis, :date_enregistrement)');
-    $pdoStatement6->bindValue(":membre_id1", $_SESSION['membre']['id_membre'], PDO::PARAM_INT);
-    $pdoStatement6->bindValue(":membre_id2", $arrayMembre1['id_membre'], PDO::PARAM_INT);
-    $pdoStatement6->bindValue(":note", $_POST['note'], PDO::PARAM_INT);
-    $pdoStatement6->bindValue(":avis", $_POST['avis'], PDO::PARAM_STR);
-    $pdoStatement6->bindValue(":date_enregistrement", date('Y-m-d H:i:s'), PDO::PARAM_STR);
-    $pdoStatement6->execute();
+    $ficheAnnonce6 = $pdo->prepare('INSERT INTO note (membre_id1, membre_id2, note, avis, date_enregistrement) VALUES (:membre_id1, :membre_id2, :note, :avis, :date_enregistrement)');
+    $ficheAnnonce6->bindValue(":membre_id1", $_SESSION['membre']['id_membre'], PDO::PARAM_INT);
+    $ficheAnnonce6->bindValue(":membre_id2", $arrayMembre1['id_membre'], PDO::PARAM_INT);
+    $ficheAnnonce6->bindValue(":note", $_POST['note'], PDO::PARAM_INT);
+    $ficheAnnonce6->bindValue(":avis", $_POST['avis'], PDO::PARAM_STR);
+    $ficheAnnonce6->bindValue(":date_enregistrement", date('Y-m-d H:i:s'), PDO::PARAM_STR);
+    $ficheAnnonce6->execute();
 }
 
 
-$pdoStatement7 = $pdoObject->prepare('SELECT * FROM commentaire WHERE annonce_id = :annonce_id');
-$pdoStatement7->bindValue(":annonce_id", $_GET['id_annonce'], PDO::PARAM_INT);
-$pdoStatement7->execute();
+$ficheAnnonce7 = $pdo->prepare('SELECT * FROM commentaire WHERE annonce_id = :annonce_id');
+$ficheAnnonce7->bindValue(":annonce_id", $_GET['id_annonce'], PDO::PARAM_INT);
+$ficheAnnonce7->execute();
 
 
 include_once('include/header.php');
@@ -78,7 +81,7 @@ include_once('include/header.php');
 
 <div class="d-flex justify-content-between">
     <div>
-        <h2><?php echo $arrayannonce['titre'] ?></h2>
+        <h2><?php echo $arrayAnn['titre'] ?></h2>
     </div>
     <!-- Button trigger modal -->
     <div>
@@ -95,7 +98,7 @@ include_once('include/header.php');
                         </button>
                     </div>
                     <div class="modal-body">
-                        <?php if ((membreConnecte() && $_SESSION['membre']['statut'] == 1) || (adminConnecte())) :
+                        <?php if ((internauteConnecte() && $_SESSION['membre']['statut'] == 1) || (adminConnecte())) :
                             if (isset($_POST['envoyer'])) {
                                 $to = $arrayMembre1['email'];  // verifier spams si pas recu
                                 $from = $_SESSION['membre']['email'];
@@ -196,72 +199,38 @@ include_once('include/header.php');
 </div>
 <br><br>
 <div class="row ">
-    <div class="col">
-        <!-- carrousel photos -->
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
-            </ol>
-            <div class="carousel-inner ">
-
-                <div class="carousel-item active">
-                    <img class="d-block w-100" src="images/imagesUpload/<?= $arrayphoto['photo1'] ?>" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="images/imagesUpload/<?= $arrayphoto['photo2'] ?>" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="images/imagesUpload/<?= $arrayphoto['photo3'] ?>" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="images/imagesUpload/<?= $arrayphoto['photo4'] ?>" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="images/imagesUpload/<?= $arrayphoto['photo5'] ?>" alt="Second slide">
-                </div>
-
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+    <div class="row justify-content-around text-center py-5">
+        <!-- Photos ANNONCE -->
+        <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 22rem;">
+            <img src=" <?= URL . 'img/' . $detail['photo'] ?>" class="card-img-top" alt="image annonce" <?= substr($detail['photo'], 0,-1) . " " .  $detail['titre'] ?>> 
+            
         </div>
-
+        
     </div>
-
-
-    <div class="col ">
-        <p class="h5 "><?= $arrayannonce['description_longue'] ?></p>
-        <div class="justify-content-center  ">
-            <br><br>
-            <div class="">
-                <p><i class="bi bi-calendar"></i> Date de publication: <?= $arrayannonce['date_enregistrement'] ?></p>
+    <!-- Infos Contact Membre ayant publié l'annonce  -->
+    <div class="justify-content-center my-2 p-5">
+        <br><br>
+        <div class="">
+            <p><i class="bi bi-calendar"></i> Date de publication: <?= $arrayAnn['date_enregistrement'] ?></p>
+            <div>
+                <p><i class="bi bi-person-square"></i> <a class="link" role="button" data-toggle="modal" data-target="#membre"><?= $arrayMembre1['prenom'] ?></a> <?php echo ($arrayMembre1['id_membre']) ?> <i class="bi bi-star-fill" style="color: #FFD700"></i></p>
                 <div>
-                    <p><i class="bi bi-person-square"></i> <a class="link" role="button" data-toggle="modal" data-target="#membre"><?= $arrayMembre1['prenom'] ?></a> <?php echo Note($arrayMembre1['id_membre']) ?> <i class="bi bi-star-fill" style="color: #FFD700"></i></p>
-                    <div>
-                        <p><i class="bi bi-tag"></i><?php echo $arrayannonce['prix'] ?> €</p>
-                    </div>
-                    <div>
-                        <p><i class="bi bi-geo-fill"></i> Adresse: <?php echo $arrayannonce['adresse'] . ", ";
-                                                                    echo $arrayannonce['cp'] . ", ";
-                                                                    echo $arrayannonce['ville'] . " " ?></p>
-                    </div>
-
+                    <p><i class="bi bi-tag"></i><?php echo $arrayAnn['prix'] ?> €</p>
+                </div>
+                <div>
+                    <p><i class="bi bi-geo-fill"></i> Adresse: <?php echo $arrayAnn['adresse'] . ", ";
+                    echo $arrayAnn['cp'] . ", ";
+                    echo $arrayAnn['ville'] . " " ?></p>
                 </div>
             </div>
-
         </div>
-
     </div>
+    <!-- Description longue Annonce -->
+    <div class="container ">
+        <div class="col w-100"><p class="h5 "><?= $arrayAnn['description_longue'] ?></p></div>
+    
+    </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="membre" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -293,17 +262,14 @@ include_once('include/header.php');
 
                         <br><br>
                         <h3 class="text-center">Avis : </h3>
-                        <?php while ($arrayMembreNote = $pdoStatement1->fetch(PDO::FETCH_ASSOC)) : ?>
+                        <?php while ($arrayMembreNote = $ficheAnnonce1->fetch(PDO::FETCH_ASSOC)) : ?>
 
                             <br>
                             <p class="text-center text-primary"><?php echo $arrayMembreNote['avis'] ?></p>
-                            <br>
-
-                        <?php endwhile; ?>
-
-                    </h3>
+                            <br><?php endwhile; ?>
+                        </h3>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -335,10 +301,10 @@ include_once('include/header.php');
     </div>
 </div>
 
-<?php if ($pdoStatement->rowCount() > 0) : ?>
+<?php if ($ficheAnnonce->rowCount() > 0) : ?>
     <div class="col-12">
 
-        <?php while ($arrayCommentaire = $pdoStatement7->fetch(PDO::FETCH_ASSOC)) : ?>
+        <?php while ($arrayCommentaire = $ficheAnnonce7->fetch(PDO::FETCH_ASSOC)) : ?>
 
             <h6>Commentaire le : <?php echo $arrayCommentaire['date_enregistrement'];  ?></h6>
             <div class="d-flex justify-content-center border border-dark rounded">
@@ -357,7 +323,7 @@ include_once('include/header.php');
 <br>
 <div class="row ">
     <?php
-    while ($arraysimilaire = $pdoStatement4->fetch(PDO::FETCH_ASSOC)) :
+    while ($arraysimilaire = $äfficheCategorie->fetch(PDO::FETCH_ASSOC)) :
     ?>
         <div class="col-sm-2 align-self-center border border-primary rounded mr-4">
             <a class="btn border-top border-bottom col-md-12 mt-1 mb-1" href="ficheAnnonce.php?id_annonce=<?= $arraysimilaire['id_annonce'] ?>">
@@ -513,15 +479,15 @@ include_once('include/header.php');
                                 // Vérification de l'existance du pseudo
 
                                 //1e étape 
-                                $pdoStatement = $pdoObject->prepare("SELECT * FROM membre WHERE pseudo = :pseudo");
+                                $ficheAnnonce = $pdo->prepare("SELECT * FROM membre WHERE pseudo = :pseudo");
 
                                 // 2e étape 
-                                $pdoStatement->bindValue(":pseudo", $_POST['pseudo'], PDO::PARAM_STR);
+                                $ficheAnnonce->bindValue(":pseudo", $_POST['pseudo'], PDO::PARAM_STR);
 
                                 // 3e étape 
-                                $pdoStatement->execute();
+                                $ficheAnnonce->execute();
 
-                                $membreArray = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+                                $membreArray = $ficheAnnonce->fetch(PDO::FETCH_ASSOC);
 
 
 
@@ -600,5 +566,5 @@ include_once('include/header.php');
 
 <br><br><br><br>
 
-<?php
-include_once('include/footer.php');
+
+    <?php require_once('include/footer.php') ?>
